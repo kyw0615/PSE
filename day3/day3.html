@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>의복 묘사 단어장 퀴즈</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 1000px; margin: auto; }
+    h1, h2 { text-align: center; }
+    #container { display: flex; gap: 20px; }
+    #sidebar { width: 30%; border-right: 1px solid #ccc; padding-right: 10px; }
+    #app { width: 70%; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    button { padding: 8px 16px; margin: 4px; cursor: pointer; }
+    .btn-start, .btn-retry, .btn-restart, .btn-show { background: #007bff; color: white; border: none; }
+    .btn-submit      { background: #28a745; color: white; border: none; }
+    .btn-retry       { background: #ffc107; color: #212529; }
+    .btn-restart     { background: #17a2b8; }
+    input[type="text"] { width: 100%; padding: 8px; margin-bottom: 10px; box-sizing: border-box; }
+    #scoreboard { font-weight: bold; margin-bottom: 10px; }
+    #history { list-style: none; padding-left: 0; max-height: 300px; overflow-y: auto; }
+    #history li { margin-bottom: 4px; }
+    #vocabModal { display: none; position: fixed; top: 10%; left: 50%; transform: translateX(-50%); width: 80%; max-height: 80%; overflow-y: auto; background: white; border: 1px solid #ccc; padding: 16px; z-index: 1000; }
+    #vocabModal table { margin-bottom: 0; }
+    #modalClose { float: right; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>의복 묘사 단어장 퀴즈</h1>
+  <div id="container">
+    <div id="sidebar">
+      <div id="scoreboard">맞음: 0, 틀림: 0</div>
+      <ul id="history"></ul>
+    </div>
+    <div id="app"></div>
+  </div>
+
+  <!-- Vocab Modal -->
+  <div id="vocabModal">
+    <span id="modalClose">✖️</span>
+    <h2>단어장</h2>
+    <table>
+      <thead><tr><th>한국어</th><th>English</th></tr></thead>
+      <tbody>
+        <!-- Rows inserted dynamically -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const vocabList = [
+  { korean: '의복 묘사', english: 'Describing clothes' },
+  { korean: '사이즈', english: 'Sizes' },
+
+  { korean: '특소', english: 'extra small' },
+  { korean: '소', english: 'small' },
+  { korean: '중', english: 'medium' },
+  { korean: '대', english: 'large' },
+  { korean: '특대', english: 'extra large' },
+  { korean: '프리 사이즈', english: 'one-size-fits-all' },
+  { korean: '스타일', english: 'Styles' },
+  { korean: '크루넥 스웨터', english: 'a crewneck sweater' },
+  { korean: '브이넥 스웨터', english: 'a V-neck sweater' },
+  { korean: '터틀넥 스웨터', english: 'a turtleneck sweater' },
+  { korean: '스쿱넥 스웨터', english: 'a scoop neck sweater' },
+  { korean: '민소매 셔츠', english: 'a sleeveless shirt' },
+  { korean: '반소매 셔츠', english: 'a short-sleeved shirt' },
+  { korean: '7부 소매 셔츠', english: 'a 3/4-sleeved shirt' },
+  { korean: '긴소매 셔츠', english: 'a long-sleeved shirt' },
+  { korean: '미니 스커트', english: 'a miniskirt' },
+  { korean: '짧은 치마', english: 'a short skirt' },
+  { korean: '무릎 길이 / 발목 길이 치마', english: 'a mid-length / a calf-length skirt' },
+  { korean: '긴 치마', english: 'a long skirt' },
+
+  { korean: '패턴', english: 'Patterns' },
+  { korean: '단색', english: 'solid' },
+  { korean: '줄무늬', english: 'striped' },
+  { korean: '물방울 무늬', english: 'polka-dotted' },
+  { korean: '격자 무늬', english: 'plaid' },
+  { korean: '프린트 무늬', english: 'print' },
+  { korean: '체크 무늬', english: 'checked' },
+  { korean: '꽃무늬', english: 'floral' },
+  { korean: '페이즐리 무늬', english: 'paisley' },
+  { korean: '술버릇이 안 좋은 사람, 진상', english: 'a bad drunk' },
+  { korean: '어린이 보호구역', english: 'a school zone' },
+  { korean: '벌금이 부과되다', english: 'be hit with a fine' },
+  { korean: '엄청', english: 'extra' },
+  { korean: '준비 작업, 준비물', english: 'prep work' },
+  { korean: '피곤한', english: 'beat' },
+  { korean: '투잡 뛰다', english: 'moonlight' },
+  { korean: '야근하다', english: 'work overtime' },
+  { korean: 's/t을 받아적다', english: 'write s/t down' },
+  { korean: '효율적으로', english: 'efficiently' },
+  { korean: '(S = 나쁜 것이) 이제서 s/o에게 증상이 나타나다', english: 'catch up with s/o' },
+  { korean: '자책하다', english: 'beat oneself up' },
+  { korean: '#인승', english: '# seater' },
+  { korean: '왜 주눅 들어 있어?', english: 'Why the long face?' }
+];
+
+
+    let stage = 'initial';
+    let quizList = [...vocabList];
+    let currentIndex = 0;
+    let history = [];
+    let correctCount = 0;
+    let wrongCount = 0;
+
+    function renderSidebar() {
+      document.getElementById('scoreboard').textContent = `맞음: ${correctCount}, 틀림: ${wrongCount}`;
+      const historyEl = document.getElementById('history');
+      historyEl.innerHTML = '';
+      history.slice(-5).forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.korean}: ${item.isCorrect ? '✅' : '❌'} ${item.english}`;
+        historyEl.appendChild(li);
+      });
+    }
+
+    function render() {
+      renderSidebar();
+      const app = document.getElementById('app');
+      app.innerHTML = '';
+
+      if (stage === 'initial') {
+        const startBtn = document.createElement('button');
+        startBtn.textContent = 'Start Quiz';
+        startBtn.className = 'btn-start';
+        startBtn.addEventListener('click', () => { stage = 'quiz'; render(); });
+        app.appendChild(startBtn);
+
+        const table = document.createElement('table');
+        const thead = document.createElement('thead');
+        thead.innerHTML = '<tr><th>한국어</th><th>English</th></tr>';
+        table.appendChild(thead);
+        const tbody = document.createElement('tbody');
+        vocabList.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${item.korean}</td><td>${item.english}</td>`;
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        app.appendChild(table);
+      }
+
+      if (stage === 'quiz') {
+        // Show vocab toggle button
+        const showBtn = document.createElement('button');
+        showBtn.textContent = 'View Vocabulary';
+        showBtn.className = 'btn-show';
+        showBtn.addEventListener('click', toggleVocabModal);
+        app.appendChild(showBtn);
+
+        const current = quizList[currentIndex];
+        const qDiv = document.createElement('div');
+        qDiv.innerHTML = `<strong>Q${currentIndex + 1}.</strong> ${current.korean}`;
+        app.appendChild(qDiv);
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = 'answer';
+        app.appendChild(input);
+        input.focus();
+
+        const btn = document.createElement('button');
+        btn.textContent = 'Submit';
+        btn.className = 'btn-submit';
+        btn.addEventListener('click', submitAnswer);
+        app.appendChild(btn);
+
+        input.addEventListener('keydown', e => {
+          if (e.key === 'Enter') { e.preventDefault(); submitAnswer(); }
+        });
+      }
+
+      if (stage === 'results') {
+        const retryBtn = document.createElement('button');
+        retryBtn.textContent = 'Retry Wrong Words';
+        retryBtn.className = 'btn-retry';
+        retryBtn.addEventListener('click', retryWrong);
+        app.appendChild(retryBtn);
+
+        const restartBtn = document.createElement('button');
+        restartBtn.textContent = 'Restart Full Quiz';
+        restartBtn.className = 'btn-restart';
+        restartBtn.addEventListener('click', restartQuiz);
+        app.appendChild(restartBtn);
+
+        const h2 = document.createElement('h2');
+        h2.textContent = 'Quiz Finished!';
+        app.appendChild(h2);
+
+        if (wrongCount > 0) {
+          const p = document.createElement('p');
+          p.textContent = `You got ${wrongCount} wrong:`;
+          app.appendChild(p);
+
+          const table = document.createElement('table');
+          const thead = document.createElement('thead');
+          thead.innerHTML = '<tr><th>한국어</th><th>English</th></tr>';
+          table.appendChild(thead);
+          const tbody = document.createElement('tbody');
+          history.filter(item => !item.isCorrect).forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${item.korean}</td><td>${item.english}</td>`;
+            tbody.appendChild(tr);
+          });
+          table.appendChild(tbody);
+          app.appendChild(table);
+        } else {
+          const p = document.createElement('p');
+          p.textContent = 'Perfect score! 🎉';
+          app.appendChild(p);
+        }
+      }
+    }
+
+    function submitAnswer() {
+      const current = quizList[currentIndex];
+      const answer = document.getElementById('answer').value.trim().toLowerCase();
+      const correct = current.english.trim().toLowerCase();
+      const isCorrect = (answer === correct);
+      history.push({ korean: current.korean, english: current.english, isCorrect });
+      isCorrect ? correctCount++ : wrongCount++;
+      document.getElementById('answer').value = '';
+      if (currentIndex + 1 < quizList.length) {
+        currentIndex++; render();
+      } else {
+        stage = 'results'; render();
+      }
+    }
+
+    function retryWrong() {
+      quizList = history.filter(item => !item.isCorrect).map(item => ({ korean: item.korean, english: item.english }));
+      resetQuiz(); stage = 'quiz'; render();
+    }
+
+    function restartQuiz() {
+      quizList = [...vocabList]; resetQuiz(); stage = 'quiz'; render();
+    }
+
+    function resetQuiz() {
+      history = []; correctCount = 0; wrongCount = 0; currentIndex = 0;
+    }
+
+    // Vocab modal functions
+    function toggleVocabModal() {
+      const modal = document.getElementById('vocabModal');
+      modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+    }
+    document.getElementById('modalClose').addEventListener('click', toggleVocabModal);
+
+    // Populate vocab modal on load
+    document.addEventListener('DOMContentLoaded', () => {
+      const tbody = document.querySelector('#vocabModal tbody');
+      vocabList.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${item.korean}</td><td>${item.english}</td>`;
+        tbody.appendChild(tr);
+      });
+      render();
+    });
+  </script>
+</body>
+</html>
