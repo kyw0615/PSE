@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day04 단어장 퀴즈</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 1000px; margin: auto; }
+    h1, h2 { text-align: center; }
+    #container { display: flex; gap: 20px; }
+    #sidebar { width: 30%; border-right: 1px solid #ccc; padding-right: 10px; }
+    #app { width: 70%; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    button { padding: 8px 16px; margin: 4px; cursor: pointer; }
+    .btn-start, .btn-retry, .btn-restart, .btn-show { background: #007bff; color: white; border: none; }
+    .btn-submit      { background: #28a745; color: white; border: none; }
+    .btn-retry       { background: #ffc107; color: #212529; }
+    .btn-restart     { background: #17a2b8; }
+    input[type="text"] { width: 100%; padding: 8px; margin-bottom: 10px; box-sizing: border-box; font-size: 16px;}
+    #scoreboard { font-weight: bold; margin-bottom: 10px; }
+    #history { list-style: none; padding-left: 0; max-height: 300px; overflow-y: auto; }
+    #history li { margin-bottom: 4px; }
+    #vocabModal { display: none; position: fixed; top: 10%; left: 50%; transform: translateX(-50%); width: 80%; max-height: 80%; overflow-y: auto; background: white; border: 1px solid #ccc; padding: 16px; z-index: 1000; }
+    #vocabModal table { margin-bottom: 0; }
+    #modalClose { float: right; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Day04 단어장 퀴즈</h1>
+  <div id="container">
+    <div id="sidebar">
+      <div id="scoreboard">맞음: 0, 틀림: 0</div>
+      <ul id="history"></ul>
+    </div>
+    <div id="app"></div>
+  </div>
+
+  <!-- Vocab Modal -->
+  <div id="vocabModal">
+    <span id="modalClose">✖️</span>
+    <h2>단어장</h2>
+    <table>
+      <thead><tr><th>한국어</th><th>English</th></tr></thead>
+      <tbody>
+        <!-- Rows inserted dynamically -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const vocabList = [
+  { korean: "진료", english: "Medical Care" },
+  { korean: "대기실에서", english: "In the Waiting Room" },
+  { korean: "약속", english: "an appointment" },
+  { korean: "접수원", english: "a receptionist" },
+  { korean: "의료 보험 카드", english: "a health insurance card" },
+  { korean: "병력 기록 양식", english: "a health history form" },
+  { korean: "검사실에서", english: "In the Examining Room" },
+  { korean: "의사", english: "a doctor" },
+  { korean: "환자", english: "a patient" },
+  { korean: "진료대", english: "an examination table" },
+  { korean: "간호사", english: "a nurse" },
+  { korean: "혈압계", english: "a blood pressure gauge" },
+  { korean: "청진기", english: "a stethoscope" },
+  { korean: "체온계", english: "a thermometer" },
+  { korean: "주사", english: "a syringe" },
+  { korean: "진료 절차", english: "Medical Procedures" },
+  { korean: "혈압을 재다", english: "check s/o's blood pressure" },
+  { korean: "체온을 재다", english: "take s/o's temperature" },
+  { korean: "심장 박동을 듣다", english: "listen to s/o's heart" },
+  { korean: "눈을 검사하다", english: "examine s/o's eyes" },
+  { korean: "목을 검사하다", english: "examine s/o's throat" },
+  { korean: "피를 뽑다", english: "draw s/o's blood" },
+  { korean: "치과 진료", english: "Dental Care" },
+  { korean: "치과", english: "Dentistry" },
+  { korean: "치과의사", english: "a dentist" },
+  { korean: "치과 보조원", english: "a dental assistant" },
+  { korean: "구강 위생사", english: "a dental hygienist" },
+  { korean: "치과 장비", english: "dental instruments" },
+  { korean: "교정과", english: "Orthodontics" },
+  { korean: "교정치과의", english: "an orthodontist" },
+  { korean: "교정기", english: "braces" },
+  { korean: "투명 교정기", english: "a clear aligner" },
+  { korean: "치과 질환", english: "Dental Problems" },
+  { korean: "충치", english: "a cavity / decay" },
+  { korean: "충전재", english: "a filling" },
+  { korean: "인공 치관", english: "a crown" },
+  { korean: "틀니", english: "dentures" },
+  { korean: "잇몸질환", english: "gum disease" },
+  { korean: "치석", english: "plaque" },
+  { korean: "진료실에서", english: "An Office Visit" },
+  { korean: "치아를 닦다", english: "clean the teeth" },
+  { korean: "X선 촬영을 하다", english: "take X-rays" },
+  { korean: "구강을 마취하다", english: "numb the mouth" },
+  { korean: "이를 드릴하다", english: "drill a tooth" },
+  { korean: "충치를 메우다", english: "fill a cavity" },
+  { korean: "이를 뽑다", english: "pull a tooth" },
+  { korean: "특별 행사를 하다", english: "have a special promotion" },
+  { korean: "#개 사면 #개 무료", english: "buy # get # free" },
+  { korean: "굿즈", english: "merch" },
+  { korean: "뒹굴거리다", english: "lounge around" },
+  { korean: "세트", english: "a combo" },
+  { korean: "대표의", english: "signature" },
+  { korean: "훅 빠지다", english: "hooked" },
+  { korean: "이자까지 해서", english: "with interest" },
+  { korean: "성형하다", english: "get work done" },
+  { korean: "재고가 있는 동안", english: "while supplies last" },
+  { korean: "이만한 가치가 없기만 해봐", english: "This better be worth it." },
+  { korean: "깜빡했나봐", english: "It must've slipped my mind." },
+  { korean: "뿌린 대로 거두다", english: "What goes around comes around." }
+];
+
+
+    let stage = 'initial';
+    let quizList = [...vocabList];
+    let currentIndex = 0;
+    let history = [];
+    let correctCount = 0;
+    let wrongCount = 0;
+
+    function renderSidebar() {
+      document.getElementById('scoreboard').textContent = `맞음: ${correctCount}, 틀림: ${wrongCount}`;
+      const historyEl = document.getElementById('history');
+      historyEl.innerHTML = '';
+      history.slice(-5).forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.korean}: ${item.isCorrect ? '✅' : '❌'} ${item.english}`;
+        historyEl.appendChild(li);
+      });
+    }
+
+    function render() {
+      renderSidebar();
+      const app = document.getElementById('app');
+      app.innerHTML = '';
+
+      if (stage === 'initial') {
+        const startBtn = document.createElement('button');
+        startBtn.textContent = 'Start Quiz';
+        startBtn.className = 'btn-start';
+        startBtn.addEventListener('click', () => { stage = 'quiz'; render(); });
+        app.appendChild(startBtn);
+
+        const table = document.createElement('table');
+        const thead = document.createElement('thead');
+        thead.innerHTML = '<tr><th>한국어</th><th>English</th></tr>';
+        table.appendChild(thead);
+        const tbody = document.createElement('tbody');
+        vocabList.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${item.korean}</td><td>${item.english}</td>`;
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        app.appendChild(table);
+      }
+
+      if (stage === 'quiz') {
+        // Show vocab toggle button
+        const showBtn = document.createElement('button');
+        showBtn.textContent = 'View Vocabulary';
+        showBtn.className = 'btn-show';
+        showBtn.addEventListener('click', toggleVocabModal);
+        app.appendChild(showBtn);
+
+        const current = quizList[currentIndex];
+        const qDiv = document.createElement('div');
+        qDiv.innerHTML = `<strong>Q${currentIndex + 1}.</strong> ${current.korean}`;
+        app.appendChild(qDiv);
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = 'answer';
+        app.appendChild(input);
+        input.focus();
+
+        const btn = document.createElement('button');
+        btn.textContent = 'Submit';
+        btn.className = 'btn-submit';
+        btn.addEventListener('click', submitAnswer);
+        app.appendChild(btn);
+
+        input.addEventListener('keydown', e => {
+          if (e.key === 'Enter') { e.preventDefault(); submitAnswer(); }
+        });
+      }
+
+      if (stage === 'results') {
+        const retryBtn = document.createElement('button');
+        retryBtn.textContent = 'Retry Wrong Words';
+        retryBtn.className = 'btn-retry';
+        retryBtn.addEventListener('click', retryWrong);
+        app.appendChild(retryBtn);
+
+        const restartBtn = document.createElement('button');
+        restartBtn.textContent = 'Restart Full Quiz';
+        restartBtn.className = 'btn-restart';
+        restartBtn.addEventListener('click', restartQuiz);
+        app.appendChild(restartBtn);
+
+        const h2 = document.createElement('h2');
+        h2.textContent = 'Quiz Finished!';
+        app.appendChild(h2);
+
+        if (wrongCount > 0) {
+          const p = document.createElement('p');
+          p.textContent = `You got ${wrongCount} wrong:`;
+          app.appendChild(p);
+
+          const table = document.createElement('table');
+          const thead = document.createElement('thead');
+          thead.innerHTML = '<tr><th>한국어</th><th>English</th></tr>';
+          table.appendChild(thead);
+          const tbody = document.createElement('tbody');
+          history.filter(item => !item.isCorrect).forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${item.korean}</td><td>${item.english}</td>`;
+            tbody.appendChild(tr);
+          });
+          table.appendChild(tbody);
+          app.appendChild(table);
+        } else {
+          const p = document.createElement('p');
+          p.textContent = 'Perfect score! 🎉';
+          app.appendChild(p);
+        }
+      }
+    }
+
+    function submitAnswer() {
+      const current = quizList[currentIndex];
+      const answer = document.getElementById('answer').value.trim().toLowerCase();
+      const correct = current.english.trim().toLowerCase();
+      const isCorrect = (answer === correct);
+      history.push({ korean: current.korean, english: current.english, isCorrect });
+      isCorrect ? correctCount++ : wrongCount++;
+      document.getElementById('answer').value = '';
+      if (currentIndex + 1 < quizList.length) {
+        currentIndex++; render();
+      } else {
+        stage = 'results'; render();
+      }
+    }
+
+    function retryWrong() {
+      quizList = history.filter(item => !item.isCorrect).map(item => ({ korean: item.korean, english: item.english }));
+      resetQuiz(); stage = 'quiz'; render();
+    }
+
+    function restartQuiz() {
+      quizList = [...vocabList]; resetQuiz(); stage = 'quiz'; render();
+    }
+
+    function resetQuiz() {
+      history = []; correctCount = 0; wrongCount = 0; currentIndex = 0;
+    }
+
+    // Vocab modal functions
+    function toggleVocabModal() {
+      const modal = document.getElementById('vocabModal');
+      modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+    }
+    document.getElementById('modalClose').addEventListener('click', toggleVocabModal);
+
+    // Populate vocab modal on load
+    document.addEventListener('DOMContentLoaded', () => {
+      const tbody = document.querySelector('#vocabModal tbody');
+      vocabList.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${item.korean}</td><td>${item.english}</td>`;
+        tbody.appendChild(tr);
+      });
+      render();
+    });
+  </script>
+</body>
+</html>
