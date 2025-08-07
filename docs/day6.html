@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>범죄 단어장 퀴즈</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    h1, h2 { text-align: center; }
+    #controls { display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+    button { padding: 12px 24px; margin: 4px; cursor: pointer; border: none; border-radius: 4px; font-size: 16px; }
+    #scoreboard { font-weight: bold; margin-left: 20px; }
+    #checklist { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; min-height: 50px; }
+    #checklist .item { padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    input[type="text"] { width: calc(100% - 16px); padding: 8px; margin-bottom: 10px; box-sizing: border-box; font-size: 16px; }
+    .btn-start { background: #007bff; color: white; }
+    .btn-submit { background: #28a745; color: white; }
+    .btn-stop { background: #dc3545; color: white; }
+    .btn-retry { background: #ffc107; color: #212529; }
+    .btn-restart { background: #17a2b8; color: white; }
+    .btn-shuffle { background: #6c757d; color: white; }
+  </style>
+</head>
+<body>
+  <h1>범죄 단어장 퀴즈</h1>
+  <div id="controls"></div>
+  <div id="checklist"></div>
+  <div id="app"></div>
+
+  <script>
+    const originalList = [
+        { korean: "범죄", english: "Crime" },
+        { korean: "파손 행위", english: "vandalism" },
+        { korean: "강도", english: "a burglary" },
+        { korean: "폭행", english: "an assault" },
+        { korean: "집단 폭력", english: "gang violence" },
+        { korean: "음주 운전", english: "drunk driving" },
+        { korean: "불법 마약", english: "illegal drugs" },
+        { korean: "방화", english: "arson" },
+        { korean: "가게 좀도둑질", english: "shoplifting" },
+        { korean: "신분 도용", english: "identity theft" },
+        { korean: "피해자", english: "a victim" },
+        { korean: "폭력 강도", english: "a mugging" },
+        { korean: "살인", english: "murder" },
+        { korean: "총", english: "a gun" },
+        { korean: "공공 안전", english: "Public Safety" },
+        { korean: "친구와 같이 걷는다", english: "walk with a friend" },
+        { korean: "환한 길로 걷는다", english: "stay on well-lit streets" },
+        { korean: "PIN번호를 노출시키지 않는다", english: "conceal your PIN number" },
+        { korean: "지갑을 지킨다", english: "protect your purse or wallet" },
+        { korean: "문을 잠근다", english: "lock your doors" },
+        { korean: "모르는 사람에게 문을 열어주지 않는다", english: "don’t open your door to strangers" },
+        { korean: "음주 운전을 하지 않는다", english: "don’t drink and drive" },
+        { korean: "안전한 웹사이트에서 쇼핑한다", english: "shop on secure websites" },
+        { korean: "주의를 살펴본다", english: "be aware of your surroundings" },
+        { korean: "수상한 물건은 신고한다", english: "report suspicious packages" },
+        { korean: "범죄를 보면 경찰에 신고한다", english: "report crimes to the police" },
+        { korean: "이웃 감시 프로그램에 참가한다", english: "join a Neighborhood Watch" },
+        { korean: "아주", english: "quite" },
+        { korean: "가장 강한", english: "full blast" },
+        { korean: "s/o의 시간을 뺏다", english: "take up s/o's time" },
+        { korean: "역전하다", english: "make a comeback" },
+        { korean: "s/o을 위해 시간을 만들다", english: "make time for s/o" },
+        { korean: "집돌이, 집순이", english: "a homebody" },
+        { korean: "머리가 하얘지다", english: "one's mind goes blank" },
+        { korean: "먹는 거에 신경 쓰다", english: "watch what you eat" },
+        { korean: "수제 맥주", english: "craft beer" },
+        { korean: "결점", english: "a shortcoming" },
+        { korean: "맥주집", english: "a N place (a beer place)" },
+        { korean: "겸손한", english: "humble" },
+        { korean: "값 비싼", english: "pricey" },
+        { korean: "현실적인", english: "down-to-earth" },
+        { korean: "별 4개 준다.", english: "I give it 4 stars." },
+        { korean: "S는 좀 N이야", english: "S is a bit of N." }
+    ];
+    let baseList = [...originalList];
+    let quizList = [...baseList];
+    let history = [];
+    let correctCount = 0, wrongCount = 0;
+    let stage = 'initial';
+    let shuffleEnabled = false;
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function toggleShuffle() {
+      shuffleEnabled = !shuffleEnabled;
+      rebuildQuizList();
+      render();
+    }
+
+    function rebuildQuizList() {
+      const done = history.map(h => ({ korean: h.korean, english: h.english }));
+      const doneSet = new Set(done.map(d => d.korean));
+      let remaining = baseList.filter(item => !doneSet.has(item.korean));
+      if (shuffleEnabled) remaining = shuffleArray([...remaining]);
+      quizList = [...done, ...remaining];
+    }
+
+    function renderControls() {
+      const ctrl = document.getElementById('controls');
+      ctrl.innerHTML = '';
+      if (stage === 'initial') {
+        const shuffleBtn = document.createElement('button');
+        shuffleBtn.textContent = shuffleEnabled ? 'Shuffle: ON' : 'Shuffle: OFF';
+        shuffleBtn.className = 'btn-shuffle';
+        shuffleBtn.onclick = toggleShuffle;
+        ctrl.appendChild(shuffleBtn);
+        const startBtn = document.createElement('button');
+        startBtn.textContent = 'Start Quiz';
+        startBtn.className = 'btn-start';
+        startBtn.onclick = () => { stage = 'quiz'; rebuildQuizList(); render(); };
+        ctrl.appendChild(startBtn);
+      }
+      if (stage === 'quiz') {
+        const stopBtn = document.createElement('button');
+        stopBtn.textContent = 'Stop Quiz'; stopBtn.className = 'btn-stop'; stopBtn.onclick = () => { stage = 'initial'; render(); };
+        ctrl.appendChild(stopBtn);
+        const shuffleBtn = document.createElement('button');
+        shuffleBtn.textContent = shuffleEnabled ? 'Shuffle: ON' : 'Shuffle: OFF';
+        shuffleBtn.className = 'btn-shuffle'; shuffleBtn.onclick = toggleShuffle;
+        ctrl.appendChild(shuffleBtn);
+      }
+      if (stage === 'results') {
+        const retryBtn = document.createElement('button');
+        retryBtn.textContent = 'Retry Wrong Words'; retryBtn.className = 'btn-retry'; retryBtn.onclick = retryWrong;
+        ctrl.appendChild(retryBtn);
+        const restartBtn = document.createElement('button');
+        restartBtn.textContent = 'Restart Full Quiz'; restartBtn.className = 'btn-restart'; restartBtn.onclick = restart;
+        ctrl.appendChild(restartBtn);
+      }
+      const score = document.createElement('span');
+      score.id = 'scoreboard'; score.textContent = `맞음: ${correctCount}, 틀림: ${wrongCount}`;
+      ctrl.appendChild(score);
+    }
+
+    function renderChecklist() {
+      const cl = document.getElementById('checklist');
+      cl.innerHTML = '';
+      if (stage === 'quiz') {
+        const div = document.createElement('div'); div.className = 'item';
+        if (history.length > 0) {
+          const item = history[history.length - 1];
+          div.innerHTML = item.isCorrect
+            ? `${item.korean}: ✅ ${item.english}`
+            : `${item.korean}: ❌ 정답: ${item.english}<br>(내 답: ${item.userAnswer})`;
+        }
+        cl.appendChild(div);
+      }
+    }
+
+    function render() {
+      renderControls(); renderChecklist();
+      const app = document.getElementById('app'); app.innerHTML = '';
+      if (stage === 'initial') {
+        app.innerHTML = `<table><thead><tr><th>한국어</th><th>English</th></tr></thead>` +
+                        `<tbody>${originalList.map(i => `<tr><td>${i.korean}</td><td>${i.english}</td></tr>`).join('')}</tbody></table>`;
+      }
+      // render() 내부, stage==='quiz' 블록을 이걸로 대체
+if (stage === 'quiz') {
+  const idx = history.length;
+  const curr = quizList[idx];
+  app.innerHTML = `
+    <div><strong>Q${idx+1}.</strong> ${curr.korean}</div>
+    <input type="text" id="answer" />
+    <button class="btn-submit">Submit</button>
+  `;
+  const input = document.getElementById('answer');
+  // 항상 포커스 유지
+  input.focus();
+  // 기존 입력값 있을 때 드래그 선택(optional)
+  input.select();
+
+  const btn = app.querySelector('button');
+  btn.onclick = submitAnswer;
+
+  input.onkeydown = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      submitAnswer();
+      // 제출 뒤에도 포커스 유지
+      const nextInput = document.getElementById('answer');
+      if (nextInput) nextInput.focus();
+    }
+  };
+}
+
+      if (stage === 'results') {
+        let html = '<h2>Quiz Finished!</h2>';
+        html += wrongCount > 0
+          ? `<p>You got ${wrongCount} wrong:</p><table><thead><tr><th>한국어</th><th>English</th></tr></thead>` +
+            `<tbody>${history.filter(h => !h.isCorrect).map(h => `<tr><td>${h.korean}</td><td>${h.english}</td></tr>`).join('')}</tbody></table>`
+          : '<p>Perfect score! 🎉</p>';
+        app.innerHTML = html;
+      }
+    }
+
+    function submitAnswer() {
+      const input = document.getElementById('answer'); const val = input.value.trim();
+      const curr = quizList[history.length];
+      const isCorrect = val.toLowerCase() === curr.english.toLowerCase();
+      history.push({ korean: curr.korean, english: curr.english, isCorrect, userAnswer: val });
+      isCorrect ? correctCount++ : wrongCount++;
+      input.value = '';
+      if (history.length < quizList.length) render(); else { stage = 'results'; render(); }
+    }
+
+    function retryWrong() {
+      baseList = history.filter(h => !h.isCorrect).map(h => ({ korean: h.korean, english: h.english }));
+      history = [];
+      correctCount = 0; wrongCount = 0;
+      stage = 'quiz';
+      shuffleEnabled = false;
+      rebuildQuizList();
+      render();
+    }
+
+    function restart() {
+      baseList = [...originalList];
+      quizList = [...baseList];
+      history = [];
+      correctCount = 0; wrongCount = 0;
+      shuffleEnabled = false;
+      stage = 'initial';
+      render();
+    }
+
+    document.addEventListener('DOMContentLoaded', render);
+  </script>
+</body>
+</html>
