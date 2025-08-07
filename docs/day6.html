@@ -89,7 +89,11 @@
       }
       return arr;
     }
-
+    function normalize(str) {
+      return str
+        .replace(/[^a-z]/gi, '')  // A–Z, a–z 이외는 다 제거
+        .toLowerCase();
+    }
     function toggleShuffle() {
       shuffleEnabled = !shuffleEnabled;
       rebuildQuizList();
@@ -205,7 +209,7 @@ if (stage === 'quiz') {
     function submitAnswer() {
       const input = document.getElementById('answer'); const val = input.value.trim();
       const curr = quizList[history.length];
-      const isCorrect = val.toLowerCase() === curr.english.toLowerCase();
+      const isCorrect = normalize(val) === normalize(curr.english);
       history.push({ korean: curr.korean, english: curr.english, isCorrect, userAnswer: val });
       isCorrect ? correctCount++ : wrongCount++;
       input.value = '';
