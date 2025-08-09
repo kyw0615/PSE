@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day7 단어장 퀴즈</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    h1, h2 { text-align: center; }
+    #controls { display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+    button { padding: 12px 24px; margin: 4px; cursor: pointer; border: none; border-radius: 4px; font-size: 16px; }
+    #scoreboard { font-weight: bold; margin-left: 20px; }
+    #checklist { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; min-height: 50px; }
+    #checklist .item { padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    input[type="text"] { width: calc(100% - 16px); padding: 8px; margin-bottom: 10px; box-sizing: border-box; font-size: 16px; }
+    .btn-start { background: #007bff; color: white; }
+    .btn-submit { background: #28a745; color: white; }
+    .btn-stop { background: #dc3545; color: white; }
+    .btn-retry { background: #ffc107; color: #212529; }
+    .btn-restart { background: #17a2b8; color: white; }
+    .btn-shuffle { background: #6c757d; color: white; }
+  </style>
+</head>
+<body>
+  <h1>Day7 단어장 퀴즈</h1>
+  <div id="controls"></div>
+  <div id="checklist"></div>
+  <div id="app"></div>
+
+  <script>
+      const originalList = [
+        { korean: "교통 표지판", english: "Traffic Signs" },
+        { korean: "정지", english: "a stop" },
+        { korean: "진입 금지", english: "do not enter" },
+        { korean: "일방 통행", english: "one way" },
+        { korean: "제한 속도", english: "a speed limit" },
+        { korean: "U턴 허용", english: "U-turn OK" },
+        { korean: "출구 없음 / 막다른 길", english: "no outlet / dead end" },
+        { korean: "우회전만 허용", english: "right turn only" },
+        { korean: "좌회전 금지", english: "no left turn" },
+        { korean: "양보", english: "yield" },
+        { korean: "합류 차선", english: "a merge" },
+        { korean: "주차 금지", english: "no parking" },
+        { korean: "장애인 주차장", english: "handicapped parking" },
+        { korean: "횡단 보도", english: "a pedestrian crossing" },
+        { korean: "철도 건널목", english: "a railroad crossing" },
+        { korean: "학교 횡단보도", english: "a school crossing" },
+        { korean: "도로 공사", english: "roadwork" },
+        { korean: "국도 / 고속도로 표지판", english: "a U.S. route / a highway marker" },
+        { korean: "병원", english: "a hospital" },
+    
+        { korean: "방향", english: "Directions" },
+        { korean: "Elm St.에서 직진하다", english: "go straight on Elm Street" },
+        { korean: "Pine St.에서 우회전하다", english: "turn right on Pine Street" },
+        { korean: "Oak St.에서 좌회전하다", english: "turn left on Oak Street" },
+        { korean: "모퉁이에서 정지하다", english: "stop at the corner" },
+        { korean: "Main St.를 지나다", english: "go past Main Street" },
+        { korean: "First St.으로 한 블록 가다", english: "go one block to First Street" },
+    
+        { korean: "지도", english: "Maps" },
+        { korean: "북", english: "north" },
+        { korean: "서", english: "west" },
+        { korean: "남", english: "south" },
+        { korean: "동", english: "east" },
+        { korean: "기호", english: "a symbol" },
+        { korean: "범례", english: "a key" },
+        { korean: "축척", english: "a scale" },
+        { korean: "거리", english: "a street" },
+        { korean: "고속도로", english: "a highway" },
+        { korean: "강", english: "a river" },
+        { korean: "글로벌 위치 확인 시스템", english: "GPS (global positioning system)" },
+        { korean: "인터넷 지도", english: "Internet map" },
+    
+        { korean: "소울 메이트, 나의 인연", english: "the one" },
+        { korean: "연설", english: "public speaking" },
+        { korean: "눈물이 터지다", english: "burst into tears" },
+        { korean: "기절하다", english: "faint" },
+        { korean: "힘들고 긴 하루다", english: "have a long day" },
+        { korean: "마음은 (속내는, 내면으로는)", english: "on the inside" },
+        { korean: "(극장 등) 가장 좋은 자리를 맡다", english: "get the best seat in the house" },
+        { korean: "사이가 안 좋다", english: "be on bad terms" },
+        { korean: "판매가 시작되다", english: "go on sale" },
+        { korean: "아낌없이 (~를) 하다", english: "go all out (~ing)" },
+        { korean: "잠깐 나가다", english: "step out for a second" },
+        { korean: "분위기", english: "vibe" },
+        { korean: "뻗다, 뻗어 버리다", english: "be out cold" },
+        { korean: "네 얼굴에 다 써져있어.", english: "It's written all over your face." },
+        { korean: "몇 년의 연습이지.", english: "Years of practice." }
+      ];
+    let baseList = [...originalList];
+    let quizList = [...baseList];
+    let history = [];
+    let correctCount = 0, wrongCount = 0;
+    let stage = 'initial';
+    let shuffleEnabled = false;
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+    function normalize(str) {
+      return str
+        .replace(/[^a-z]/gi, '')  // A–Z, a–z 이외는 다 제거
+        .toLowerCase();
+    }
+    function toggleShuffle() {
+      shuffleEnabled = !shuffleEnabled;
+      rebuildQuizList();
+      render();
+    }
+
+    function rebuildQuizList() {
+      const done = history.map(h => ({ korean: h.korean, english: h.english }));
+      const doneSet = new Set(done.map(d => d.korean));
+      let remaining = baseList.filter(item => !doneSet.has(item.korean));
+      if (shuffleEnabled) remaining = shuffleArray([...remaining]);
+      quizList = [...done, ...remaining];
+    }
+
+    function renderControls() {
+      const ctrl = document.getElementById('controls');
+      ctrl.innerHTML = '';
+      if (stage === 'initial') {
+        const shuffleBtn = document.createElement('button');
+        shuffleBtn.textContent = shuffleEnabled ? 'Shuffle: ON' : 'Shuffle: OFF';
+        shuffleBtn.className = 'btn-shuffle';
+        shuffleBtn.onclick = toggleShuffle;
+        ctrl.appendChild(shuffleBtn);
+        const startBtn = document.createElement('button');
+        startBtn.textContent = 'Start Quiz';
+        startBtn.className = 'btn-start';
+        startBtn.onclick = () => { stage = 'quiz'; rebuildQuizList(); render(); };
+        ctrl.appendChild(startBtn);
+      }
+      if (stage === 'quiz') {
+        const stopBtn = document.createElement('button');
+        stopBtn.textContent = 'Stop Quiz'; stopBtn.className = 'btn-stop'; stopBtn.onclick = () => { stage = 'initial'; render(); };
+        ctrl.appendChild(stopBtn);
+        const shuffleBtn = document.createElement('button');
+        shuffleBtn.textContent = shuffleEnabled ? 'Shuffle: ON' : 'Shuffle: OFF';
+        shuffleBtn.className = 'btn-shuffle'; shuffleBtn.onclick = toggleShuffle;
+        ctrl.appendChild(shuffleBtn);
+      }
+      if (stage === 'results') {
+        const retryBtn = document.createElement('button');
+        retryBtn.textContent = 'Retry Wrong Words'; retryBtn.className = 'btn-retry'; retryBtn.onclick = retryWrong;
+        ctrl.appendChild(retryBtn);
+        const restartBtn = document.createElement('button');
+        restartBtn.textContent = 'Restart Full Quiz'; restartBtn.className = 'btn-restart'; restartBtn.onclick = restart;
+        ctrl.appendChild(restartBtn);
+      }
+      const score = document.createElement('span');
+      score.id = 'scoreboard'; score.textContent = `맞음: ${correctCount}, 틀림: ${wrongCount}`;
+      ctrl.appendChild(score);
+    }
+
+    function renderChecklist() {
+      const cl = document.getElementById('checklist');
+      cl.innerHTML = '';
+      if (stage === 'quiz') {
+        const div = document.createElement('div'); div.className = 'item';
+        if (history.length > 0) {
+          const item = history[history.length - 1];
+          div.innerHTML = item.isCorrect
+            ? `${item.korean}: ✅ ${item.english}`
+            : `${item.korean}: ❌ 정답: ${item.english}<br>(내 답: ${item.userAnswer})`;
+        }
+        cl.appendChild(div);
+      }
+    }
+
+    function render() {
+      renderControls(); renderChecklist();
+      const app = document.getElementById('app'); app.innerHTML = '';
+      if (stage === 'initial') {
+        app.innerHTML = `<table><thead><tr><th>한국어</th><th>English</th></tr></thead>` +
+                        `<tbody>${originalList.map(i => `<tr><td>${i.korean}</td><td>${i.english}</td></tr>`).join('')}</tbody></table>`;
+      }
+      // render() 내부, stage==='quiz' 블록을 이걸로 대체
+if (stage === 'quiz') {
+  const idx = history.length;
+  const curr = quizList[idx];
+  app.innerHTML = `
+    <div><strong>Q${idx+1}.</strong> ${curr.korean}</div>
+    <input type="text" id="answer" />
+    <button class="btn-submit">Submit</button>
+  `;
+  const input = document.getElementById('answer');
+  // 항상 포커스 유지
+  input.focus();
+  // 기존 입력값 있을 때 드래그 선택(optional)
+  input.select();
+
+  const btn = app.querySelector('button');
+  btn.onclick = submitAnswer;
+
+  input.onkeydown = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      submitAnswer();
+      // 제출 뒤에도 포커스 유지
+      const nextInput = document.getElementById('answer');
+      if (nextInput) nextInput.focus();
+    }
+  };
+}
+
+      if (stage === 'results') {
+        let html = '<h2>Quiz Finished!</h2>';
+        html += wrongCount > 0
+          ? `<p>You got ${wrongCount} wrong:</p><table><thead><tr><th>한국어</th><th>English</th></tr></thead>` +
+            `<tbody>${history.filter(h => !h.isCorrect).map(h => `<tr><td>${h.korean}</td><td>${h.english}</td></tr>`).join('')}</tbody></table>`
+          : '<p>Perfect score! 🎉</p>';
+        app.innerHTML = html;
+      }
+    }
+
+    function submitAnswer() {
+      const input = document.getElementById('answer'); const val = input.value.trim();
+      const curr = quizList[history.length];
+      const isCorrect = normalize(val) === normalize(curr.english);
+      history.push({ korean: curr.korean, english: curr.english, isCorrect, userAnswer: val });
+      isCorrect ? correctCount++ : wrongCount++;
+      input.value = '';
+      if (history.length < quizList.length) render(); else { stage = 'results'; render(); }
+    }
+
+    function retryWrong() {
+      baseList = history.filter(h => !h.isCorrect).map(h => ({ korean: h.korean, english: h.english }));
+      history = [];
+      correctCount = 0; wrongCount = 0;
+      stage = 'quiz';
+      shuffleEnabled = false;
+      rebuildQuizList();
+      render();
+    }
+
+    function restart() {
+      baseList = [...originalList];
+      quizList = [...baseList];
+      history = [];
+      correctCount = 0; wrongCount = 0;
+      shuffleEnabled = false;
+      stage = 'initial';
+      render();
+    }
+
+    document.addEventListener('DOMContentLoaded', render);
+  </script>
+  <p>이제 특수기호같은 거 다 무시하고 영어 알파벳만 올바르게 입력하면 정답이 됩니다. 스페이스바 대소문자도 다 봐줘요</p>
+</body>
+</html>
