@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day7 단어장 퀴즈</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    h1, h2 { text-align: center; }
+    #controls { display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+    button { padding: 12px 24px; margin: 4px; cursor: pointer; border: none; border-radius: 4px; font-size: 16px; }
+    #scoreboard { font-weight: bold; margin-left: 20px; }
+    #checklist { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; min-height: 50px; }
+    #checklist .item { padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    input[type="text"] { width: calc(100% - 16px); padding: 8px; margin-bottom: 10px; box-sizing: border-box; font-size: 16px; }
+    .btn-start { background: #007bff; color: white; }
+    .btn-submit { background: #28a745; color: white; }
+    .btn-stop { background: #dc3545; color: white; }
+    .btn-retry { background: #ffc107; color: #212529; }
+    .btn-restart { background: #17a2b8; color: white; }
+    .btn-shuffle { background: #6c757d; color: white; }
+  </style>
+</head>
+<body>
+  <h1>Day7 단어장 퀴즈</h1>
+  <div id="controls"></div>
+  <div id="checklist"></div>
+  <div id="app"></div>
+
+  <script>
+      const originalList = [
+  { korean: "주방 용품", english: "Kitchen Utensils" },
+  { korean: "깡통 따개", english: "a can opener" },
+  { korean: "강판", english: "a grater" },
+  { korean: "찜통", english: "a steamer" },
+  { korean: "저장 용기", english: "a storage container" },
+  { korean: "후라이팬", english: "a frying pan" },
+  { korean: "냄비", english: "a pot" },
+  { korean: "국자", english: "a ladle" },
+  { korean: "이중 냄비", english: "a double boiler" },
+  { korean: "나무 숟가락", english: "a wooden spoon" },
+  { korean: "캐서롤 접시", english: "a casserole dish" },
+  { korean: "마늘 압착기", english: "a garlic press" },
+  { korean: "고기 썰기용 칼", english: "a carving knife" },
+  { korean: "굽기용 팬", english: "a roasting pan" },
+  { korean: "굽기용 쇠선반", english: "a roasting rack" },
+  { korean: "야채 껍질 제거기", english: "a vegetable peeler" },
+  { korean: "껍질 벗기는 칼", english: "a paring knife" },
+  { korean: "여과기", english: "a colander" },
+  { korean: "부엌용 타이머", english: "a kitchen timer" },
+  { korean: "주걱", english: "a spatula" },
+  { korean: "계란 교반기", english: "an eggbeater" },
+  { korean: "거품기", english: "a whisk" },
+  { korean: "체", english: "a strainer" },
+  { korean: "집게", english: "tongs" },
+  { korean: "뚜껑", english: "a lid" },
+  { korean: "소스 냄비", english: "a saucepan" },
+  { korean: "케이크팬", english: "a cake pan" },
+  { korean: "쿠키 판", english: "a cookie sheet" },
+  { korean: "파이 팬", english: "a pie pan" },
+  { korean: "냄비 집게", english: "potholders" },
+  { korean: "밀방망이", english: "a rolling pin" },
+  { korean: "믹스용 그릇", english: "a mixing bowl" },
+  { korean: "s/t (*옷)을 바지 안으로 넣다", english: "tuck s/t in" },
+  { korean: "벼락치기하다", english: "cram" },
+  { korean: "고립된", english: "stranded" },
+  { korean: "충실한", english: "committed" },
+  { korean: "S가 고민(거리)이다", english: "S be on one's mind" },
+  { korean: "가공식품", english: "processed food" },
+  { korean: "정신 차리다", english: "get one's act together" },
+  { korean: "힘이 풀리다", english: "give out" },
+  { korean: "S가 이상해 (s/o을 불편하게 해, 소름 끼치게 해)", english: "give s/o the creeps" },
+  { korean: "끝까지 해내다", english: "push through" },
+  { korean: "원래 그런 거야", english: "That's just the way things are." },
+  { korean: "절대로 s/t은 놓치지 않을 거야", english: "I wouldn't miss s/t for the world." },
+  { korean: "이제 시작했어", english: "Just getting started." },
+  { korean: "딱 짚어서 말할 수는 없어", english: "I can't put my finger on it." },
+  { korean: "부탁 좀 들어줘, V 해줄 수 있어?", english: "Can you do me a favor and V?" }
+];
+    let baseList = [...originalList];
+    let quizList = [...baseList];
+    let history = [];
+    let correctCount = 0, wrongCount = 0;
+    let stage = 'initial';
+    let shuffleEnabled = false;
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+    function normalize(str) {
+      return str
+        .replace(/[^a-z]/gi, '')  // A–Z, a–z 이외는 다 제거
+        .toLowerCase();
+    }
+    function toggleShuffle() {
+      shuffleEnabled = !shuffleEnabled;
+      rebuildQuizList();
+      render();
+    }
+
+    function rebuildQuizList() {
+      const done = history.map(h => ({ korean: h.korean, english: h.english }));
+      const doneSet = new Set(done.map(d => d.korean));
+      let remaining = baseList.filter(item => !doneSet.has(item.korean));
+      if (shuffleEnabled) remaining = shuffleArray([...remaining]);
+      quizList = [...done, ...remaining];
+    }
+
+    function renderControls() {
+      const ctrl = document.getElementById('controls');
+      ctrl.innerHTML = '';
+      if (stage === 'initial') {
+        const shuffleBtn = document.createElement('button');
+        shuffleBtn.textContent = shuffleEnabled ? 'Shuffle: ON' : 'Shuffle: OFF';
+        shuffleBtn.className = 'btn-shuffle';
+        shuffleBtn.onclick = toggleShuffle;
+        ctrl.appendChild(shuffleBtn);
+        const startBtn = document.createElement('button');
+        startBtn.textContent = 'Start Quiz';
+        startBtn.className = 'btn-start';
+        startBtn.onclick = () => { stage = 'quiz'; rebuildQuizList(); render(); };
+        ctrl.appendChild(startBtn);
+      }
+      if (stage === 'quiz') {
+        const stopBtn = document.createElement('button');
+        stopBtn.textContent = 'Stop Quiz'; stopBtn.className = 'btn-stop'; stopBtn.onclick = () => { stage = 'initial'; render(); };
+        ctrl.appendChild(stopBtn);
+        const shuffleBtn = document.createElement('button');
+        shuffleBtn.textContent = shuffleEnabled ? 'Shuffle: ON' : 'Shuffle: OFF';
+        shuffleBtn.className = 'btn-shuffle'; shuffleBtn.onclick = toggleShuffle;
+        ctrl.appendChild(shuffleBtn);
+      }
+      if (stage === 'results') {
+        const retryBtn = document.createElement('button');
+        retryBtn.textContent = 'Retry Wrong Words'; retryBtn.className = 'btn-retry'; retryBtn.onclick = retryWrong;
+        ctrl.appendChild(retryBtn);
+        const restartBtn = document.createElement('button');
+        restartBtn.textContent = 'Restart Full Quiz'; restartBtn.className = 'btn-restart'; restartBtn.onclick = restart;
+        ctrl.appendChild(restartBtn);
+      }
+      const score = document.createElement('span');
+      score.id = 'scoreboard'; score.textContent = `맞음: ${correctCount}, 틀림: ${wrongCount}`;
+      ctrl.appendChild(score);
+    }
+
+    function renderChecklist() {
+      const cl = document.getElementById('checklist');
+      cl.innerHTML = '';
+      if (stage === 'quiz') {
+        const div = document.createElement('div'); div.className = 'item';
+        if (history.length > 0) {
+          const item = history[history.length - 1];
+          div.innerHTML = item.isCorrect
+            ? `${item.korean}: ✅ ${item.english}`
+            : `${item.korean}: ❌ 정답: ${item.english}<br>(내 답: ${item.userAnswer})`;
+        }
+        cl.appendChild(div);
+      }
+    }
+
+    function render() {
+      renderControls(); renderChecklist();
+      const app = document.getElementById('app'); app.innerHTML = '';
+      if (stage === 'initial') {
+        app.innerHTML = `<table><thead><tr><th>한국어</th><th>English</th></tr></thead>` +
+                        `<tbody>${originalList.map(i => `<tr><td>${i.korean}</td><td>${i.english}</td></tr>`).join('')}</tbody></table>`;
+      }
+      // render() 내부, stage==='quiz' 블록을 이걸로 대체
+if (stage === 'quiz') {
+  const idx = history.length;
+  const curr = quizList[idx];
+  app.innerHTML = `
+    <div><strong>Q${idx+1}.</strong> ${curr.korean}</div>
+    <input type="text" id="answer" />
+    <button class="btn-submit">Submit</button>
+  `;
+  const input = document.getElementById('answer');
+  // 항상 포커스 유지
+  input.focus();
+  // 기존 입력값 있을 때 드래그 선택(optional)
+  input.select();
+
+  const btn = app.querySelector('button');
+  btn.onclick = submitAnswer;
+
+  input.onkeydown = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      submitAnswer();
+      // 제출 뒤에도 포커스 유지
+      const nextInput = document.getElementById('answer');
+      if (nextInput) nextInput.focus();
+    }
+  };
+}
+
+      if (stage === 'results') {
+        let html = '<h2>Quiz Finished!</h2>';
+        html += wrongCount > 0
+          ? `<p>You got ${wrongCount} wrong:</p><table><thead><tr><th>한국어</th><th>English</th></tr></thead>` +
+            `<tbody>${history.filter(h => !h.isCorrect).map(h => `<tr><td>${h.korean}</td><td>${h.english}</td></tr>`).join('')}</tbody></table>`
+          : '<p>Perfect score! 🎉</p>';
+        app.innerHTML = html;
+      }
+    }
+
+    function submitAnswer() {
+      const input = document.getElementById('answer'); const val = input.value.trim();
+      const curr = quizList[history.length];
+      const isCorrect = normalize(val) === normalize(curr.english);
+      history.push({ korean: curr.korean, english: curr.english, isCorrect, userAnswer: val });
+      isCorrect ? correctCount++ : wrongCount++;
+      input.value = '';
+      if (history.length < quizList.length) render(); else { stage = 'results'; render(); }
+    }
+
+    function retryWrong() {
+      baseList = history.filter(h => !h.isCorrect).map(h => ({ korean: h.korean, english: h.english }));
+      history = [];
+      correctCount = 0; wrongCount = 0;
+      stage = 'quiz';
+      shuffleEnabled = false;
+      rebuildQuizList();
+      render();
+    }
+
+    function restart() {
+      baseList = [...originalList];
+      quizList = [...baseList];
+      history = [];
+      correctCount = 0; wrongCount = 0;
+      shuffleEnabled = false;
+      stage = 'initial';
+      render();
+    }
+
+    document.addEventListener('DOMContentLoaded', render);
+  </script>
+  <p>이제 특수기호같은 거 다 무시하고 영어 알파벳만 올바르게 입력하면 정답이 됩니다. 스페이스바 대소문자도 다 봐줘요</p>
+</body>
+</html>
