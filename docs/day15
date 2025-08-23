@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>의복 묘사 단어장 퀴즈</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    h1, h2 { text-align: center; }
+    #controls { display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+    button { padding: 12px 24px; margin: 4px; cursor: pointer; border: none; border-radius: 4px; font-size: 16px; }
+    #scoreboard { font-weight: bold; margin-left: 20px; }
+    #checklist { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; min-height: 50px; }
+    #checklist .item { padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; width: 300px; text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    input[type="text"] { width: calc(100% - 16px); padding: 8px; margin-bottom: 6px; box-sizing: border-box; font-size: 16px; }
+    .feedback { min-height: 22px; color: #dc3545; font-size: 14px; margin-bottom: 8px; }
+    .btn-start { background: #007bff; color: white; }
+    .btn-submit { background: #28a745; color: white; }
+    .btn-stop { background: #dc3545; color: white; }
+    .btn-retry { background: #ffc107; color: #212529; }
+    .btn-restart { background: #17a2b8; color: white; }
+    .btn-shuffle { background: #6c757d; color: white; }
+    .btn-skip { background: #6c757d; color: white; }
+
+    /* 흔들림 애니메이션 */
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+      100% { transform: translateX(0); }
+    }
+    .shake { animation: shake 0.3s ease; }
+  </style>
+</head>
+<body>
+  <h1>의복 묘사 단어장 퀴즈</h1>
+  <div id="controls"></div>
+  <div id="checklist"></div>
+  <div id="app"></div>
+
+  <script>
+    const originalList = [
+      { korean: "A Hospital", english: "병원" },
+      { korean: "Medical Specialists", english: "전문의" },
+      { korean: "an internist", english: "내과의사" },
+      { korean: "an obstetrician", english: "산과의사" },
+      { korean: "a cardiologist", english: "심장전문의" },
+      { korean: "a pediatrician", english: "소아과 의사" },
+      { korean: "an oncologist", english: "종양학 전문의" },
+      { korean: "a radiologist", english: "방사선과 의사" },
+      { korean: "an ophthalmologist", english: "안과의사" },
+      { korean: "a psychiatrist", english: "정신과 의사" },
+      { korean: "Nursing Staff", english: "간호사" },
+      { korean: "a surgical nurse", english: "수술실 간호원" },
+      { korean: "a registered nurse (RN)", english: "공인 간호사" },
+      { korean: "a licensed practical nurse (LPN)", english: "간호 조무사" },
+      { korean: "a certified nursing assistant", english: "유자격 간호 보조원" },
+      { korean: "Hospital Staff", english: "병원 직원" },
+      { korean: "an administrator", english: "행정직원" },
+      { korean: "an admissions clerk", english: "입원과 직원" },
+      { korean: "a dietician", english: "영양사" },
+      { korean: "an orderly", english: "보조원" },
+      { korean: "mold", english: "곰팡이" },
+      { korean: "lose one's cool", english: "이성을 잃다" },
+      { korean: "cut off", english: "끼어들다" },
+      { korean: "honk one's horn", english: "경적을 울리다" },
+      { korean: "the teacher certification exam", english: "교원 임용고시" },
+      { korean: "one last N", english: "마지막 N" },
+      { korean: "call it night", english: "오늘 밤을 마치다" },
+      { korean: "give s/o a round of applause", english: "찬사를 보내다, 박수 쳐주다" },
+      { korean: "be about to", english: "~하기 직전이다" },
+      { korean: "It's been a minute", english: "오래됐어" }
+    ]
+;
+    let baseList = [...originalList];
+    let quizList = [...baseList];
+    let history = [];
+    let correctCount = 0, wrongCount = 0;
+    let stage = 'initial';
+    let shuffleEnabled = false;
+
+    function normalize(str) {
+      return str.replace(/[^a-z]/gi, '').toLowerCase();
+    }
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function toggleShuffle() {
+      shuffleEnabled = !shuffleEnabled;
+      rebuildQuizList();
+      render();
+    }
+
+    function rebuildQuizList() {
+      const done = history.map(h => ({ korean: h.korean, english: h.english }));
+      const doneSet = new Set(done.map(d => d.korean));
+      let remaining = baseList.filter(item => !doneSet.has(item.korean));
+      if (shuffleEnabled) remaining = shuffleArray([...remaining]);
+      quizList = [...done, ...remaining];
+    }
+
+    function renderControls() {
+      const ctrl = document.getElementById('controls');
+      ctrl.innerHTML = '';
+      if (stage === 'initial') {
+        const shuffleBtn = document.createElement('button');
+        shuffleBtn.textContent = shuffleEnabled ? 'Shuffle: ON' : 'Shuffle: OFF';
+        shuffleBtn.className = 'btn-shuffle';
+        shuffleBtn.onclick = toggleShuffle;
+        ctrl.appendChild(shuffleBtn);
+        const startBtn = document.createElement('button');
+        startBtn.textContent = 'Start Quiz';
+        startBtn.className = 'btn-start';
+        startBtn.onclick = () => { stage = 'quiz'; rebuildQuizList(); render(); };
+        ctrl.appendChild(startBtn);
+      }
+      if (stage === 'quiz') {
+        const stopBtn = document.createElement('button');
+        stopBtn.textContent = 'Stop Quiz'; stopBtn.className = 'btn-stop'; stopBtn.onclick = () => { stage = 'initial'; render(); };
+        ctrl.appendChild(stopBtn);
+        const shuffleBtn = document.createElement('button');
+        shuffleBtn.textContent = shuffleEnabled ? 'Shuffle: ON' : 'Shuffle: OFF';
+        shuffleBtn.className = 'btn-shuffle'; shuffleBtn.onclick = toggleShuffle;
+        ctrl.appendChild(shuffleBtn);
+      }
+      if (stage === 'results') {
+        const retryBtn = document.createElement('button');
+        retryBtn.textContent = 'Retry Wrong Words'; retryBtn.className = 'btn-retry'; retryBtn.onclick = retryWrong;
+        ctrl.appendChild(retryBtn);
+        const restartBtn = document.createElement('button');
+        restartBtn.textContent = 'Restart Full Quiz'; restartBtn.className = 'btn-restart'; restartBtn.onclick = restart;
+        ctrl.appendChild(restartBtn);
+      }
+      const score = document.createElement('span');
+      score.id = 'scoreboard'; score.textContent = `맞음: ${correctCount}, 틀림: ${wrongCount}`;
+      ctrl.appendChild(score);
+    }
+
+    function renderChecklist() {
+      const cl = document.getElementById('checklist');
+      cl.innerHTML = '';
+      if (stage === 'quiz') {
+        const div = document.createElement('div'); div.className = 'item';
+        if (history.length > 0) {
+          const item = history[history.length - 1];
+          div.innerHTML = item.isCorrect
+            ? `${item.korean}: ✅ ${item.english}`
+            : `${item.korean}: ❌ 정답: ${item.english}<br>(내 답: ${item.userAnswer})`;
+        }
+        cl.appendChild(div);
+      }
+    }
+
+    function render() {
+      renderControls(); renderChecklist();
+      const app = document.getElementById('app'); app.innerHTML = '';
+      if (stage === 'initial') {
+        app.innerHTML = `<table><thead><tr><th>한국어</th><th>English</th></tr></thead>` +
+                        `<tbody>${originalList.map(i => `<tr><td>${i.korean}</td><td>${i.english}</td></tr>`).join('')}</tbody></table>`;
+      }
+      if (stage === 'quiz') {
+        const idx = history.length;
+        const curr = quizList[idx];
+        app.innerHTML = `<div><strong>Q${idx+1}.</strong> ${curr.korean}</div>` +
+                        `<input type="text" id="answer" autofocus />` +
+                        `<div id="feedback" class="feedback"></div>` +
+                        `<button class="btn-submit">Submit</button>`+
+                        `<button class="btn-skip">모르겠어요 (Skip)</button>`;
+        const input = document.getElementById('answer');
+        const feedback = document.getElementById('feedback');
+        const submitBtn = app.querySelector('.btn-submit');
+        const skipBtn = app.querySelector('.btn-skip');
+
+        function focusInput(){ input.focus(); input.select && input.select(); }
+        focusInput();
+
+        submitBtn.onclick = submitAnswer;
+        skipBtn.onclick = skipQuestion;
+        input.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); submitAnswer(); }};
+
+        function submitAnswer(){
+          const val = input.value.trim();
+          if (!val) { feedback.textContent = '입력 후 Enter 또는 Submit을 눌러주세요.'; focusInput(); return; }
+          const isCorrect = normalize(val) === normalize(curr.english);
+          if (!isCorrect) {
+            feedback.textContent = '오답입니다. 다시 시도하세요.';
+            input.classList.remove('shake');
+            void input.offsetWidth; // reflow to retrigger
+            input.classList.add('shake');
+            focusInput();
+            return; // 기록/채점하지 않음
+          }
+          // 정답일 때만 기록
+          history.push({ korean: curr.korean, english: curr.english, isCorrect: true, userAnswer: val });
+          correctCount++;
+          feedback.textContent = '';
+          goNext();
+        }
+
+        function skipQuestion(){
+          const val = input.value.trim();
+          history.push({ korean: curr.korean, english: curr.english, isCorrect: false, userAnswer: val });
+          wrongCount++;
+          feedback.textContent = '';
+          goNext();
+        }
+
+        function goNext(){
+          if (history.length < quizList.length) {
+            render();
+          } else {
+            stage = 'results';
+            render();
+          }
+        }
+      }
+      if (stage === 'results') {
+        let html = '<h2>Quiz Finished!</h2>';
+        html += wrongCount > 0
+          ? `<p>You got ${wrongCount} wrong:</p><table><thead><tr><th>한국어</th><th>English</th></tr></thead>` +
+            `<tbody>${history.filter(h => !h.isCorrect).map(h => `<tr><td>${h.korean}</td><td>${h.english}</td></tr>`).join('')}</tbody></table>`
+          : '<p>Perfect score! 🎉</p>';
+        document.getElementById('app').innerHTML = html;
+      }
+    }
+
+    function retryWrong() {
+      baseList = history.filter(h => !h.isCorrect).map(h => ({ korean: h.korean, english: h.english }));
+      history = [];
+      correctCount = 0; wrongCount = 0;
+      stage = 'quiz'; shuffleEnabled = false; rebuildQuizList(); render();
+    }
+
+    function restart() {
+      baseList = [...originalList]; quizList = [...baseList];
+      history = []; correctCount = 0; wrongCount = 0;
+      shuffleEnabled = false; stage = 'initial'; render();
+    }
+
+    document.addEventListener('DOMContentLoaded', render);
+  </script>
+</body>
+</html>
