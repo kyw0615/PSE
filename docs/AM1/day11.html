@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AM1 day11 단어장 퀴즈</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    h1, h2 { text-align: center; }
+    #controls { display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+    button { padding: 12px 24px; margin: 4px; cursor: pointer; border: none; border-radius: 4px; font-size: 16px; }
+    #scoreboard { font-weight: bold; margin-left: 20px; }
+    #checklist { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; min-height: 50px; }
+    #checklist .item { padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; width: 300px; text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    input[type="text"] { width: calc(100% - 16px); padding: 8px; margin-bottom: 6px; box-sizing: border-box; font-size: 16px; }
+    .feedback { min-height: 22px; color: #dc3545; font-size: 14px; margin-bottom: 8px; }
+    .btn-start { background: #007bff; color: white; }
+    .btn-submit { background: #28a745; color: white; }
+    .btn-stop { background: #dc3545; color: white; }
+    .btn-retry { background: #ffc107; color: #212529; }
+    .btn-restart { background: #17a2b8; color: white; }
+    .btn-shuffle { background: #6c757d; color: white; }
+    .btn-skip { background: #6c757d; color: white; }
+
+    /* 흔들림 애니메이션 */
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+      100% { transform: translateX(0); }
+    }
+    .shake { animation: shake 0.3s ease; }
+  </style>
+</head>
+<body>
+  <h1>AM1 day11 단어장 퀴즈</h1>
+  <div id="controls"></div>
+  <div id="checklist"></div>
+  <div id="app"></div>
+
+  <script>
+    const originalList =  [
+  { korean: "시민 참여", english: "Civil Engagement" },
+  { korean: "의무", english: "Responsibilities" },
+  { korean: "투표하다", english: "vote" },
+  { korean: "세금을 납부하다", english: "pay taxes" },
+  { korean: "법을 준수하다", english: "obey the law" },
+  { korean: "선발 징병제에 등록하다", english: "register with selective service" },
+  { korean: "배심원 업무를 수행하다", english: "serve on a jury" },
+  { korean: "소식에 정통하다", english: "be informed" },
+  { korean: "시민권 요건", english: "Citizenship Requirements" },
+  { korean: "18세 이상인", english: "be 18 or older" },
+  { korean: "미국에서 5년 동안 거주한다", english: "live in the U.S. for five years" },
+  { korean: "시민권 시험 통과", english: "take a citizenship test" },
+  { korean: "권리", english: "Rights" },
+  { korean: "평화적인 집회", english: "peaceful assembly" },
+  { korean: "표현의 자유", english: "free speech" },
+  { korean: "종교의 자유", english: "freedom of religion" },
+  { korean: "언론의 자유", english: "freedom of the press" },
+  { korean: "공정한 재판의 권리", english: "a fair trial" },
+  { korean: "선거", english: "An Election" },
+  { korean: "선거에 출마하다", english: "run for office" },
+  { korean: "선거 운동을 하다", english: "campaign" },
+  { korean: "토론하다", english: "debate" },
+  { korean: "당선되다", english: "get elected" },
+  { korean: "재직하다", english: "serve" },
+  { korean: "선거 입후보자", english: "a candidate" },
+  { korean: "(정당을 지지하는) 집회", english: "a rally" },
+  { korean: "상대방", english: "an opponent" },
+  { korean: "무기명 투표", english: "a ballot" },
+  { korean: "기표소", english: "a polling booth / a voting booth" },
+  { korean: "선거 결과", english: "election results" },
+  { korean: "당선된 공무원", english: "an elected official" },
+  { korean: "법 제도", english: "The Legal System" },
+  { korean: "용의자를 체포하다", english: "arrest a suspect" },
+  { korean: "변호사를 고용하다", english: "hire a lawyer / hire an attorney" },
+  { korean: "법정에 출두하다", english: "appear in court" },
+  { korean: "경찰관", english: "a police officer" },
+  { korean: "수갑", english: "handcuffs" },
+  { korean: "경비원", english: "a guard" },
+  { korean: "피고측 변호사", english: "a defense attorney" },
+  { korean: "피고", english: "a defendant" },
+  { korean: "재판관", english: "a judge" },
+  { korean: "재판을 받다", english: "stand trial" },
+  { korean: "법정", english: "a courtroom" },
+  { korean: "배심원", english: "a jury" },
+  { korean: "증거", english: "evidence" },
+  { korean: "검사", english: "a prosecuting attorney" },
+  { korean: "증인", english: "a witness" },
+  { korean: "법원 속기사", english: "a court reporter" },
+  { korean: "법정 간수", english: "a bailiff" },
+  { korean: "피고에게 유죄를 선고하다", english: "convict the defendant" },
+  { korean: "피고에게 판결을 내리다", english: "sentence the defendant" },
+  { korean: "감옥에 들어가다", english: "go to jail / go to prison" },
+  { korean: "석방되다", english: "be released" },
+  { korean: "평결", english: "a verdict" },
+  { korean: "죄인 / 죄수", english: "a convict / a prisoner" },
+  { korean: "최저임금", english: "minimum wage" },
+  { korean: "납치하다", english: "kidnap" },
+  { korean: "금이 가게 하다", english: "crack" },
+  { korean: "발견하다", english: "discover" },
+  { korean: "설립하다", english: "found" },
+  { korean: "정학시키다", english: "suspend" },
+  { korean: "견인하다", english: "tow" },
+  { korean: "돈을 되갚다", english: "repay" },
+  { korean: "회수하다", english: "repossess" },
+  { korean: "수면 무호흡증", english: "sleep apnea" },
+  { korean: "치료하다", english: "treat" },
+  { korean: "묻다", english: "bury" },
+  { korean: "화장하다", english: "cremate" },
+  { korean: "뿌리다", english: "scatter" },
+  { korean: "발급하다", english: "issue" },
+  { korean: "가상화폐", english: "cryptocurrency" },
+  { korean: "퇴학시키다", english: "expel" },
+  { korean: "불경기", english: "a recession" }
+];
+        
+    let baseList = [...originalList];
+    let quizList = [...baseList];
+    let history = [];
+    let correctCount = 0, wrongCount = 0;
+    let stage = 'initial';
+    let shuffleEnabled = false;
+
+    function normalize(str) {
+      return str.replace(/[^a-z]/gi, '').toLowerCase();
+    }
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function toggleShuffle() {
+      shuffleEnabled = !shuffleEnabled;
+      rebuildQuizList();
+      render();
+    }
+
+    function rebuildQuizList() {
+      const done = history.map(h => ({ korean: h.korean, english: h.english }));
+      const doneSet = new Set(done.map(d => d.korean));
+      let remaining = baseList.filter(item => !doneSet.has(item.korean));
+      if (shuffleEnabled) remaining = shuffleArray([...remaining]);
+      quizList = [...done, ...remaining];
+    }
+
+    function renderControls() {
+      const ctrl = document.getElementById('controls');
+      ctrl.innerHTML = '';
+      if (stage === 'initial') {
+        const shuffleBtn = document.createElement('button');
+        shuffleBtn.textContent = shuffleEnabled ? 'Shuffle: ON' : 'Shuffle: OFF';
+        shuffleBtn.className = 'btn-shuffle';
+        shuffleBtn.onclick = toggleShuffle;
+        ctrl.appendChild(shuffleBtn);
+        const startBtn = document.createElement('button');
+        startBtn.textContent = 'Start Quiz';
+        startBtn.className = 'btn-start';
+        startBtn.onclick = () => { stage = 'quiz'; rebuildQuizList(); render(); };
+        ctrl.appendChild(startBtn);
+      }
+      if (stage === 'quiz') {
+        const stopBtn = document.createElement('button');
+        stopBtn.textContent = 'Stop Quiz'; stopBtn.className = 'btn-stop'; stopBtn.onclick = () => { stage = 'initial'; render(); };
+        ctrl.appendChild(stopBtn);
+        const shuffleBtn = document.createElement('button');
+        shuffleBtn.textContent = shuffleEnabled ? 'Shuffle: ON' : 'Shuffle: OFF';
+        shuffleBtn.className = 'btn-shuffle'; shuffleBtn.onclick = toggleShuffle;
+        ctrl.appendChild(shuffleBtn);
+      }
+      if (stage === 'results') {
+        const retryBtn = document.createElement('button');
+        retryBtn.textContent = 'Retry Wrong Words'; retryBtn.className = 'btn-retry'; retryBtn.onclick = retryWrong;
+        ctrl.appendChild(retryBtn);
+        const restartBtn = document.createElement('button');
+        restartBtn.textContent = 'Restart Full Quiz'; restartBtn.className = 'btn-restart'; restartBtn.onclick = restart;
+        ctrl.appendChild(restartBtn);
+      }
+      const score = document.createElement('span');
+      score.id = 'scoreboard'; score.textContent = `맞음: ${correctCount}, 틀림: ${wrongCount}`;
+      ctrl.appendChild(score);
+    }
+
+    function renderChecklist() {
+      const cl = document.getElementById('checklist');
+      cl.innerHTML = '';
+      if (stage === 'quiz') {
+        const div = document.createElement('div'); div.className = 'item';
+        if (history.length > 0) {
+          const item = history[history.length - 1];
+          div.innerHTML = item.isCorrect
+            ? `${item.korean}: ✅ ${item.english}`
+            : `${item.korean}: ❌ 정답: ${item.english}<br>(내 답: ${item.userAnswer})`;
+        }
+        cl.appendChild(div);
+      }
+    }
+
+    function render() {
+      renderControls(); renderChecklist();
+      const app = document.getElementById('app'); app.innerHTML = '';
+      if (stage === 'initial') {
+        app.innerHTML = `<table><thead><tr><th>한국어</th><th>English</th></tr></thead>` +
+                        `<tbody>${originalList.map(i => `<tr><td>${i.korean}</td><td>${i.english}</td></tr>`).join('')}</tbody></table>`;
+      }
+      if (stage === 'quiz') {
+        const idx = history.length;
+        const curr = quizList[idx];
+        app.innerHTML = `<div><strong>Q${idx+1}.</strong> ${curr.korean}</div>` +
+                        `<input type="text" id="answer" autofocus />` +
+                        `<div id="feedback" class="feedback"></div>` +
+                        `<button class="btn-submit">Submit</button>`+
+                        `<button class="btn-skip">모르겠어요 (Skip)</button>`;
+        const input = document.getElementById('answer');
+        const feedback = document.getElementById('feedback');
+        const submitBtn = app.querySelector('.btn-submit');
+        const skipBtn = app.querySelector('.btn-skip');
+
+        function focusInput(){ input.focus(); input.select && input.select(); }
+        focusInput();
+
+        submitBtn.onclick = submitAnswer;
+        skipBtn.onclick = skipQuestion;
+        input.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); submitAnswer(); }};
+
+        function submitAnswer(){
+          const val = input.value.trim();
+          if (!val) { feedback.textContent = '입력 후 Enter 또는 Submit을 눌러주세요.'; focusInput(); return; }
+          const isCorrect = normalize(val) === normalize(curr.english);
+          if (!isCorrect) {
+            feedback.textContent = '오답입니다. 다시 시도하세요.';
+            input.classList.remove('shake');
+            void input.offsetWidth; // reflow to retrigger
+            input.classList.add('shake');
+            focusInput();
+            return; // 기록/채점하지 않음
+          }
+          // 정답일 때만 기록
+          history.push({ korean: curr.korean, english: curr.english, isCorrect: true, userAnswer: val });
+          correctCount++;
+          feedback.textContent = '';
+          goNext();
+        }
+
+        function skipQuestion(){
+          const val = input.value.trim();
+          history.push({ korean: curr.korean, english: curr.english, isCorrect: false, userAnswer: val });
+          wrongCount++;
+          feedback.textContent = '';
+          goNext();
+        }
+
+        function goNext(){
+          if (history.length < quizList.length) {
+            render();
+          } else {
+            stage = 'results';
+            render();
+          }
+        }
+      }
+      if (stage === 'results') {
+        let html = '<h2>Quiz Finished!</h2>';
+        html += wrongCount > 0
+          ? `<p>You got ${wrongCount} wrong:</p><table><thead><tr><th>한국어</th><th>English</th></tr></thead>` +
+            `<tbody>${history.filter(h => !h.isCorrect).map(h => `<tr><td>${h.korean}</td><td>${h.english}</td></tr>`).join('')}</tbody></table>`
+          : '<p>Perfect score! 🎉</p>';
+        document.getElementById('app').innerHTML = html;
+      }
+    }
+
+    function retryWrong() {
+      baseList = history.filter(h => !h.isCorrect).map(h => ({ korean: h.korean, english: h.english }));
+      history = [];
+      correctCount = 0; wrongCount = 0;
+      stage = 'quiz'; shuffleEnabled = false; rebuildQuizList(); render();
+    }
+
+    function restart() {
+      baseList = [...originalList]; quizList = [...baseList];
+      history = []; correctCount = 0; wrongCount = 0;
+      shuffleEnabled = false; stage = 'initial'; render();
+    }
+
+    document.addEventListener('DOMContentLoaded', render);
+  </script>
+</body>
+</html>
