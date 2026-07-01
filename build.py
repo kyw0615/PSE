@@ -49,8 +49,16 @@ def discover_decks(month_id):
         if not fn.endswith(".json"):
             continue
         deck_id = fn[:-5]
-        with open(os.path.join(folder, fn), "r", encoding="utf-8") as f:
-            data = json.load(f)
+        path = os.path.join(folder, fn)
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except json.JSONDecodeError as e:
+            raise SystemExit(
+                f"오류: JSON 형식이 잘못되었습니다 -> {os.path.join(month_id, fn)}\n"
+                f"       {e}\n"
+                f"       (쉼표/따옴표를 확인하세요. 마지막 항목 뒤에는 쉼표가 없어야 합니다.)"
+            )
         words = data.get("words", [])
         # 데이터 위생 검사
         clean = []
@@ -125,6 +133,11 @@ def build():
 
 
 if __name__ == "__main__":
+    # Windows 콘솔(cp949)에서도 한글/기호 출력이 깨지거나 죽지 않도록
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
     try:
         build()
     except FileNotFoundError as e:

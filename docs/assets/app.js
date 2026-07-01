@@ -89,19 +89,25 @@
     const done = days.filter(d => stats[deckKey(month.id, d.id)] && stats[deckKey(month.id, d.id)].done).length;
     return { done, total: days.length };
   }
+  // 월 단어 수 — 통합본(all) 같은 중복 덱은 제외하고 실제 day 덱만 합산
+  function monthWordCount(month) {
+    return month.days.filter(d => isDayDeck(d.id)).reduce((s, d) => s + d.count, 0);
+  }
 
   /* ---------- 라우팅 ---------- */
   function parseHash() {
     const h = (location.hash || "").replace(/^#\/?/, "");
     if (!h) return { view: "home" };
+    const dec = (s) => { try { return decodeURIComponent(s); } catch (e) { return s; } };
     const parts = h.split("/").filter(Boolean);
-    if (parts.length >= 2) return { view: "deck", monthId: decodeURIComponent(parts[0]), deckId: decodeURIComponent(parts[1]) };
-    if (parts.length === 1) return { view: "month", monthId: decodeURIComponent(parts[0]) };
+    if (parts.length >= 2) return { view: "deck", monthId: dec(parts[0]), deckId: dec(parts[1]) };
+    if (parts.length === 1) return { view: "month", monthId: dec(parts[0]) };
     return { view: "home" };
   }
-  function go(monthId, deckId) {
-    location.hash = deckId ? `#/${encodeURIComponent(monthId)}/${encodeURIComponent(deckId)}` : (monthId ? `#/${encodeURIComponent(monthId)}` : "#/");
+  function hashOf(monthId, deckId) {
+    return deckId ? `#/${encodeURIComponent(monthId)}/${encodeURIComponent(deckId)}` : (monthId ? `#/${encodeURIComponent(monthId)}` : "#/");
   }
+  function go(monthId, deckId) { location.hash = hashOf(monthId, deckId); }
 
   /* ---------- 사이드바 렌더 ---------- */
   let searchTerm = "";
@@ -136,7 +142,7 @@
           <span class="caret">▼</span>
           <span>${esc(month.name)}</span>
           ${prog.total ? `<span class="prog">${prog.done}/${prog.total}</span>` : ""}
-          <span class="count-pill">${month.days.reduce((s, d) => s + d.count, 0)}단어</span>
+          <span class="count-pill">${monthWordCount(month)}단어</span>
         </button>`);
       head.addEventListener("click", () => {
         prefs.collapsed[month.id] = !prefs.collapsed[month.id];
@@ -154,7 +160,7 @@
           <a class="day-item ${d.virtual ? "all-item" : ""} ${isActive ? "active" : ""}" href="#/${esc(month.id)}/${esc(d.id)}">
             <span class="d-label">${esc(d.label)}${d.topic && !d.virtual ? ` <span class="d-topic">· ${esc(d.topic)}</span>` : ""}</span>
             <span class="d-count">${d.count}</span>
-            ${st && st.done ? `<span class="d-check">✓</span>` : ""}
+            ${st && st.done ? `<span class="d-check" role="img" aria-label="완료" title="완료">✓</span>` : ""}
           </a>`);
         item.addEventListener("click", () => { closeNav(); });
         list.appendChild(item);
@@ -183,8 +189,14 @@
   }
 
   function rebuildQuizList(s) {
+    // 이미 푼 단어(done) + 남은 단어(remaining). 완전히 동일한 단어쌍은 한 번만 출제.
     const doneSet = new Set(s.history.map(h => h.korean + "|" + h.english));
-    let remaining = s.baseList.filter(w => !doneSet.has(w.korean + "|" + w.english));
+    const seen = new Set(doneSet);
+    let remaining = s.baseList.filter(w => {
+      const k = w.korean + "|" + w.english;
+      if (seen.has(k)) return false;
+      seen.add(k); return true;
+    });
     if (s.shuffle) remaining = shuffleArray(remaining);
     const done = s.history.map(h => ({ korean: h.korean, english: h.english }));
     s.quizList = done.concat(remaining);
@@ -209,9 +221,9 @@
     } else if (route.view === "month") {
       const m = monthById(route.monthId);
       if (!m) { renderNotFound(); return; }
-      // 월 클릭 시 첫 번째 날로 이동
+      // 월 클릭 시 첫 번째 날로 이동. replace 로 중간 이력을 남기지 않아 뒤로가기가 정상 동작.
       const first = (virtualAll(m) ? "__all__" : (m.days[0] && m.days[0].id));
-      if (first) { go(m.id, first); return; }
+      if (first) { location.replace(hashOf(m.id, first)); return; }
       renderHome();
     } else {
       session = null;
@@ -237,8 +249,10 @@
 
   /* ----- 홈 ----- */
   function renderHome() {
+    // 통합본(all)·전체 같은 중복/가상 덱은 제외하고 실제 day 덱 기준으로 집계
     let totalWords = 0, totalDecks = 0, doneDecks = 0;
     DATA.months.forEach(m => m.days.forEach(d => {
+      if (!isDayDeck(d.id)) return;
       totalWords += d.count; totalDecks++;
       const st = stats[deckKey(m.id, d.id)];
       if (st && st.done) doneDecks++;
@@ -256,15 +270,16 @@
     const cards = DATA.months.map(m => {
       const prog = monthProgress(m);
       const pct = prog.total ? Math.round(prog.done / prog.total * 100) : 0;
-      const words = m.days.reduce((s, d) => s + d.count, 0);
+      const words = monthWordCount(m);
       const chips = m.days.map(d => {
         const st = stats[deckKey(m.id, d.id)];
-        return `<a class="day-chip ${st && st.done ? "done" : ""}" href="#/${esc(m.id)}/${esc(d.id)}" title="${esc(d.topic || d.label)} · ${d.count}단어">${esc(d.label)}</a>`;
+        const done = st && st.done;
+        return `<a class="day-chip ${done ? "done" : ""}" href="#/${esc(m.id)}/${esc(d.id)}" title="${esc(d.topic || d.label)} · ${d.count}단어${done ? " · 완료" : ""}">${esc(d.label)}</a>`;
       }).join("");
       return `
         <div class="month-card">
           <h3>📗 ${esc(m.name)}</h3>
-          <div class="m-meta">${m.days.length}개 단어장 · ${words}단어 · 완료 ${prog.done}/${prog.total}</div>
+          <div class="m-meta">${prog.total}개 단어장 · ${words}단어 · 완료 ${prog.done}/${prog.total}</div>
           <div class="m-prog"><span style="width:${pct}%"></span></div>
           <div class="day-chips">${chips}</div>
         </div>`;
@@ -304,12 +319,14 @@
         </span>
       </div>`;
 
+    // 미리보기 단계에선 전체 단어 수, 퀴즈/결과 단계에선 실제 출제 수(틀린단어 재시도 반영)
+    const headerCount = s.stage === "preview" ? rd.words.length : s.quizList.length;
     const header = `
       <div class="deck-title">
         <h1>${esc(rd.month.name)} · ${esc(rd.label)}</h1>
         ${rd.topic ? `<span class="topic-badge">${esc(rd.topic)}</span>` : ""}
       </div>
-      <p class="deck-sub">${rd.words.length}개 단어</p>`;
+      <p class="deck-sub">${headerCount}개 단어</p>`;
 
     let body = "";
     if (s.stage === "preview") body = viewPreview(s);
@@ -337,8 +354,8 @@
     const dirLabel = s.direction === "ko2en" ? "한국어 → English" : "English → 한국어";
     return `
       <div class="btn-row" style="margin:16px 0 18px">
-        <button class="toggle ${s.shuffle ? "on" : ""}" id="t-shuffle"><span class="dot"></span> 셔플 ${s.shuffle ? "ON" : "OFF"}</button>
-        <button class="toggle ${s.direction === "en2ko" ? "on" : ""}" id="t-dir"><span class="dot"></span> ${dirLabel}</button>
+        <button class="toggle ${s.shuffle ? "on" : ""}" id="t-shuffle" aria-pressed="${s.shuffle}"><span class="dot"></span> 셔플 ${s.shuffle ? "ON" : "OFF"}</button>
+        <button class="toggle ${s.direction === "en2ko" ? "on" : ""}" id="t-dir" aria-pressed="${s.direction === "en2ko"}"><span class="dot"></span> ${dirLabel}</button>
         <button class="btn btn-primary btn-lg" id="b-start" style="margin-left:auto">퀴즈 시작 ▶</button>
       </div>
       <div class="table-scroll">${vocabTable(s.rd.words)}</div>`;
@@ -387,7 +404,7 @@
       <div class="last-result">${lastHtml}</div>
       <div class="question"><span class="qnum">Q${idx + 1}</span>${esc(promptText(s, curr))}</div>
       <div class="dir-hint">${s.direction === "ko2en" ? "영어로 입력하세요" : "한국어로 입력하세요"}</div>
-      <input class="answer-input" id="answer" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="정답 입력 후 Enter" />
+      <input class="answer-input" id="answer" type="text" aria-label="정답 입력" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="정답 입력 후 Enter" />
       <div class="feedback" id="feedback"></div>
       <div class="btn-row" style="justify-content:center">
         <button class="btn btn-success" id="b-submit">제출 (Enter)</button>
@@ -515,16 +532,34 @@
     prefs.theme = next; savePrefs(); applyTheme(next);
   }
 
-  /* ---------- 모바일 네비 ---------- */
-  function openNav() { document.body.classList.add("nav-open"); }
-  function closeNav() { document.body.classList.remove("nav-open"); }
+  /* ---------- 모바일 네비 (접근성: 포커스 이동 · Esc 닫기 · 배경 inert) ---------- */
+  let lastFocused = null;
+  function openNav() {
+    lastFocused = document.activeElement;
+    document.body.classList.add("nav-open");
+    const btn = document.getElementById("menu-btn");
+    if (btn) btn.setAttribute("aria-expanded", "true");
+    const main = document.querySelector(".main");
+    if (main) main.setAttribute("inert", "");
+    const search = document.getElementById("search");
+    if (search) search.focus();
+  }
+  function closeNav() {
+    if (!document.body.classList.contains("nav-open")) return;
+    document.body.classList.remove("nav-open");
+    const btn = document.getElementById("menu-btn");
+    if (btn) btn.setAttribute("aria-expanded", "false");
+    const main = document.querySelector(".main");
+    if (main) main.removeAttribute("inert");
+    if (lastFocused && lastFocused.focus) { try { lastFocused.focus(); } catch (e) {} }
+  }
 
   /* ---------- 초기화 ---------- */
   function boot() {
     document.getElementById("app-root").innerHTML = `
       <div class="backdrop" id="backdrop"></div>
       <header class="topbar">
-        <button class="icon-btn" id="menu-btn" aria-label="메뉴">☰</button>
+        <button class="icon-btn" id="menu-btn" aria-label="메뉴 열기" aria-controls="nav" aria-expanded="false">☰</button>
         <span class="brand" id="brand-m">${esc(DATA.title || "PSE 단어장")}</span>
       </header>
       <div class="layout">
@@ -533,7 +568,7 @@
             <div class="title" id="brand"><span class="logo">P</span><span>${esc(DATA.title || "PSE 단어장")}</span></div>
             <div class="subtitle">${esc(DATA.subtitle || "")}</div>
           </div>
-          <div class="search-wrap"><input id="search" type="search" placeholder="🔍 월 · 일 · 주제 검색" autocomplete="off" /></div>
+          <div class="search-wrap"><input id="search" type="search" aria-label="월 · 일 · 주제 검색" placeholder="🔍 월 · 일 · 주제 검색" autocomplete="off" /></div>
           <nav class="nav" id="nav"></nav>
           <div class="sidebar-foot">
             <button class="theme-btn" id="theme-btn" type="button">🌙 다크 모드</button>
@@ -551,6 +586,10 @@
     document.getElementById("brand-m").onclick = () => { go(""); closeNav(); };
     document.getElementById("search").addEventListener("input", e => {
       searchTerm = e.target.value; renderSidebar(parseHash());
+    });
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && document.body.classList.contains("nav-open")) closeNav();
     });
 
     window.addEventListener("hashchange", render);

@@ -11,18 +11,18 @@
   --border:        #e2e6f0;
   --text:          #1b2030;
   --text-muted:    #626c82;
-  --text-faint:    #98a1b5;
+  --text-faint:    #6c7690;
 
   --accent:        #6366f1;
   --accent-strong: #4f46e5;
   --accent-soft:   #eef0ff;
   --accent-contrast:#ffffff;
 
-  --green:         #15a34a;
+  --green:         #0d803a;
   --green-soft:    #e7f6ec;
   --red:           #dc2626;
   --red-soft:      #fdecec;
-  --amber:         #d97706;
+  --amber:         #b45309;
   --amber-soft:    #fdf1e0;
   --slate:         #64748b;
 
@@ -50,7 +50,7 @@
   --border:        #2a3040;
   --text:          #e7eaf3;
   --text-muted:    #99a2b6;
-  --text-faint:    #6b7488;
+  --text-faint:    #8891a6;
 
   --accent:        #818cf8;
   --accent-strong: #6366f1;
@@ -258,8 +258,8 @@ a { color: var(--accent-strong); }
 .btn-success { background: var(--green); }
 .btn-success:hover { filter: brightness(1.05); }
 .btn-danger  { background: var(--red); }
-.btn-warn    { background: var(--amber); color: #1c1206; }
-.btn-info    { background: #0ea5e9; }
+.btn-warn    { background: var(--amber); color: #ffffff; }
+.btn-info    { background: #0284c7; }
 .btn-ghost {
   background: transparent; color: var(--text); border-color: var(--border);
 }
@@ -267,6 +267,19 @@ a { color: var(--accent-strong); }
 .btn-sm { padding: 7px 13px; font-size: 13px; }
 
 .btn-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+/* 키보드 포커스 링 (마우스/터치에는 영향 없음) */
+:where(.btn, .toggle, .day-item, .month-head, .theme-btn, .day-chip, .icon-btn,
+       .breadcrumb a, details.cheat > summary, .sidebar-head .title):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+.answer-input:focus-visible,
+.search-wrap input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
 
 /* 토글 (셔플/방향) */
 .toggle {
