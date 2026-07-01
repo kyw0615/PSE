@@ -1,0 +1,222 @@
+{
+ "label": "Day 7",
+ "topic": null,
+ "words": [
+  {
+   "korean": "교통 표지판",
+   "english": "Traffic Signs"
+  },
+  {
+   "korean": "정지",
+   "english": "a stop"
+  },
+  {
+   "korean": "진입 금지",
+   "english": "do not enter"
+  },
+  {
+   "korean": "일방 통행",
+   "english": "one way"
+  },
+  {
+   "korean": "제한 속도",
+   "english": "a speed limit"
+  },
+  {
+   "korean": "U턴 허용",
+   "english": "U-turn OK"
+  },
+  {
+   "korean": "출구 없음 / 막다른 길",
+   "english": "no outlet / dead end"
+  },
+  {
+   "korean": "우회전만 허용",
+   "english": "right turn only"
+  },
+  {
+   "korean": "좌회전 금지",
+   "english": "no left turn"
+  },
+  {
+   "korean": "양보",
+   "english": "yield"
+  },
+  {
+   "korean": "합류 차선",
+   "english": "a merge"
+  },
+  {
+   "korean": "주차 금지",
+   "english": "no parking"
+  },
+  {
+   "korean": "장애인 주차장",
+   "english": "handicapped parking"
+  },
+  {
+   "korean": "횡단 보도",
+   "english": "a pedestrian crossing"
+  },
+  {
+   "korean": "철도 건널목",
+   "english": "a railroad crossing"
+  },
+  {
+   "korean": "학교 횡단보도",
+   "english": "a school crossing"
+  },
+  {
+   "korean": "도로 공사",
+   "english": "roadwork"
+  },
+  {
+   "korean": "국도 / 고속도로 표지판",
+   "english": "a U.S. route / a highway marker"
+  },
+  {
+   "korean": "병원",
+   "english": "a hospital"
+  },
+  {
+   "korean": "방향",
+   "english": "Directions"
+  },
+  {
+   "korean": "Elm St.에서 직진하다",
+   "english": "go straight on Elm Street"
+  },
+  {
+   "korean": "Pine St.에서 우회전하다",
+   "english": "turn right on Pine Street"
+  },
+  {
+   "korean": "Oak St.에서 좌회전하다",
+   "english": "turn left on Oak Street"
+  },
+  {
+   "korean": "모퉁이에서 정지하다",
+   "english": "stop at the corner"
+  },
+  {
+   "korean": "Main St.를 지나다",
+   "english": "go past Main Street"
+  },
+  {
+   "korean": "First St.으로 한 블록 가다",
+   "english": "go one block to First Street"
+  },
+  {
+   "korean": "지도",
+   "english": "Maps"
+  },
+  {
+   "korean": "북",
+   "english": "north"
+  },
+  {
+   "korean": "서",
+   "english": "west"
+  },
+  {
+   "korean": "남",
+   "english": "south"
+  },
+  {
+   "korean": "동",
+   "english": "east"
+  },
+  {
+   "korean": "기호",
+   "english": "a symbol"
+  },
+  {
+   "korean": "범례",
+   "english": "a key"
+  },
+  {
+   "korean": "축척",
+   "english": "a scale"
+  },
+  {
+   "korean": "거리",
+   "english": "a street"
+  },
+  {
+   "korean": "고속도로",
+   "english": "a highway"
+  },
+  {
+   "korean": "강",
+   "english": "a river"
+  },
+  {
+   "korean": "글로벌 위치 확인 시스템",
+   "english": "GPS (global positioning system)"
+  },
+  {
+   "korean": "인터넷 지도",
+   "english": "Internet map"
+  },
+  {
+   "korean": "소울 메이트, 나의 인연",
+   "english": "the one"
+  },
+  {
+   "korean": "연설",
+   "english": "public speaking"
+  },
+  {
+   "korean": "눈물이 터지다",
+   "english": "burst into tears"
+  },
+  {
+   "korean": "기절하다",
+   "english": "faint"
+  },
+  {
+   "korean": "힘들고 긴 하루다",
+   "english": "have a long day"
+  },
+  {
+   "korean": "마음은 (속내는, 내면으로는)",
+   "english": "on the inside"
+  },
+  {
+   "korean": "(극장 등) 가장 좋은 자리를 맡다",
+   "english": "get the best seat in the house"
+  },
+  {
+   "korean": "사이가 안 좋다",
+   "english": "be on bad terms"
+  },
+  {
+   "korean": "판매가 시작되다",
+   "english": "go on sale"
+  },
+  {
+   "korean": "아낌없이 (~를) 하다",
+   "english": "go all out (~ing)"
+  },
+  {
+   "korean": "잠깐 나가다",
+   "english": "step out for a second"
+  },
+  {
+   "korean": "분위기",
+   "english": "vibe"
+  },
+  {
+   "korean": "뻗다, 뻗어 버리다",
+   "english": "be out cold"
+  },
+  {
+   "korean": "네 얼굴에 다 써져있어.",
+   "english": "It's written all over your face."
+  },
+  {
+   "korean": "몇 년의 연습이지.",
+   "english": "Years of practice."
+  }
+ ]
+}

@@ -1,0 +1,1698 @@
+{
+ "label": "통합본",
+ "topic": "Day 2–17 전체 단어",
+ "words": [
+  {
+   "korean": "의복 묘사",
+   "english": "Describing clothes"
+  },
+  {
+   "korean": "사이즈",
+   "english": "Sizes"
+  },
+  {
+   "korean": "특소",
+   "english": "extra small"
+  },
+  {
+   "korean": "소",
+   "english": "small"
+  },
+  {
+   "korean": "중",
+   "english": "medium"
+  },
+  {
+   "korean": "대",
+   "english": "large"
+  },
+  {
+   "korean": "특대",
+   "english": "extra large"
+  },
+  {
+   "korean": "프리 사이즈",
+   "english": "one-size-fits-all"
+  },
+  {
+   "korean": "스타일",
+   "english": "Styles"
+  },
+  {
+   "korean": "크루넥 스웨터",
+   "english": "a crewneck sweater"
+  },
+  {
+   "korean": "브이넥 스웨터",
+   "english": "a V-neck sweater"
+  },
+  {
+   "korean": "터틀넥 스웨터",
+   "english": "a turtleneck sweater"
+  },
+  {
+   "korean": "스쿱넥 스웨터",
+   "english": "a scoop neck sweater"
+  },
+  {
+   "korean": "민소매 셔츠",
+   "english": "a sleeveless shirt"
+  },
+  {
+   "korean": "반소매 셔츠",
+   "english": "a short-sleeved shirt"
+  },
+  {
+   "korean": "7부 소매 셔츠",
+   "english": "a 3/4-sleeved shirt"
+  },
+  {
+   "korean": "긴소매 셔츠",
+   "english": "a long-sleeved shirt"
+  },
+  {
+   "korean": "미니 스커트",
+   "english": "a miniskirt"
+  },
+  {
+   "korean": "짧은 치마",
+   "english": "a short skirt"
+  },
+  {
+   "korean": "무릎 길이 / 발목 길이 치마",
+   "english": "a mid-length / a calf-length skirt"
+  },
+  {
+   "korean": "긴 치마",
+   "english": "a long skirt"
+  },
+  {
+   "korean": "패턴",
+   "english": "Patterns"
+  },
+  {
+   "korean": "단색",
+   "english": "solid"
+  },
+  {
+   "korean": "줄무늬",
+   "english": "striped"
+  },
+  {
+   "korean": "물방울 무늬",
+   "english": "polka-dotted"
+  },
+  {
+   "korean": "격자 무늬",
+   "english": "plaid"
+  },
+  {
+   "korean": "프린트 무늬",
+   "english": "print"
+  },
+  {
+   "korean": "체크 무늬",
+   "english": "checked"
+  },
+  {
+   "korean": "꽃무늬",
+   "english": "floral"
+  },
+  {
+   "korean": "페이즐리 무늬",
+   "english": "paisley"
+  },
+  {
+   "korean": "옷 수선",
+   "english": "Making Alterations"
+  },
+  {
+   "korean": "옷 수선점",
+   "english": "An Alterations Shop"
+  },
+  {
+   "korean": "양재사",
+   "english": "a dressmaker"
+  },
+  {
+   "korean": "양재용 마네킹",
+   "english": "a dressmaker's dummy"
+  },
+  {
+   "korean": "재봉사",
+   "english": "a tailor"
+  },
+  {
+   "korean": "칼라",
+   "english": "a collar"
+  },
+  {
+   "korean": "허리띠",
+   "english": "a waistband"
+  },
+  {
+   "korean": "소매",
+   "english": "a sleeve"
+  },
+  {
+   "korean": "주머니",
+   "english": "a pocket"
+  },
+  {
+   "korean": "밑단",
+   "english": "a hem"
+  },
+  {
+   "korean": "아랫단",
+   "english": "a cuff"
+  },
+  {
+   "korean": "바느질 용품",
+   "english": "Sewing Supplies"
+  },
+  {
+   "korean": "바늘",
+   "english": "a needle"
+  },
+  {
+   "korean": "실",
+   "english": "thread"
+  },
+  {
+   "korean": "시침핀",
+   "english": "a (straight) pin"
+  },
+  {
+   "korean": "바늘꽂이",
+   "english": "a pincushion"
+  },
+  {
+   "korean": "옷핀",
+   "english": "a safety pin"
+  },
+  {
+   "korean": "골무",
+   "english": "a thimble"
+  },
+  {
+   "korean": "가위",
+   "english": "a pair of scissors"
+  },
+  {
+   "korean": "줄자",
+   "english": "a tape measure"
+  },
+  {
+   "korean": "솔기 트는 기구",
+   "english": "a seam ripper"
+  },
+  {
+   "korean": "수선",
+   "english": "Alterations"
+  },
+  {
+   "korean": "바지 길이를 늘리다",
+   "english": "lengthen the pants"
+  },
+  {
+   "korean": "바지 길이를 줄이다",
+   "english": "shorten the pants"
+  },
+  {
+   "korean": "바지 품을 늘리다",
+   "english": "let out the pants"
+  },
+  {
+   "korean": "바지 품을 줄이다",
+   "english": "take in the pants"
+  },
+  {
+   "korean": "진료",
+   "english": "Medical Care"
+  },
+  {
+   "korean": "대기실에서",
+   "english": "In the Waiting Room"
+  },
+  {
+   "korean": "약속",
+   "english": "an appointment"
+  },
+  {
+   "korean": "접수원",
+   "english": "a receptionist"
+  },
+  {
+   "korean": "의료 보험 카드",
+   "english": "a health insurance card"
+  },
+  {
+   "korean": "병력 기록 양식",
+   "english": "a health history form"
+  },
+  {
+   "korean": "검사실에서",
+   "english": "In the Examining Room"
+  },
+  {
+   "korean": "의사",
+   "english": "a doctor"
+  },
+  {
+   "korean": "환자",
+   "english": "a patient"
+  },
+  {
+   "korean": "진료대",
+   "english": "an examination table"
+  },
+  {
+   "korean": "간호사",
+   "english": "a nurse"
+  },
+  {
+   "korean": "혈압계",
+   "english": "a blood pressure gauge"
+  },
+  {
+   "korean": "청진기",
+   "english": "a stethoscope"
+  },
+  {
+   "korean": "체온계",
+   "english": "a thermometer"
+  },
+  {
+   "korean": "주사",
+   "english": "a syringe"
+  },
+  {
+   "korean": "진료 절차",
+   "english": "Medical Procedures"
+  },
+  {
+   "korean": "혈압을 재다",
+   "english": "check s/o's blood pressure"
+  },
+  {
+   "korean": "체온을 재다",
+   "english": "take s/o's temperature"
+  },
+  {
+   "korean": "심장 박동을 듣다",
+   "english": "listen to s/o's heart"
+  },
+  {
+   "korean": "눈을 검사하다",
+   "english": "examine s/o's eyes"
+  },
+  {
+   "korean": "목을 검사하다",
+   "english": "examine s/o's throat"
+  },
+  {
+   "korean": "피를 뽑다",
+   "english": "draw s/o's blood"
+  },
+  {
+   "korean": "치과 진료",
+   "english": "Dental Care"
+  },
+  {
+   "korean": "치과",
+   "english": "Dentistry"
+  },
+  {
+   "korean": "치과의사",
+   "english": "a dentist"
+  },
+  {
+   "korean": "치과 보조원",
+   "english": "a dental assistant"
+  },
+  {
+   "korean": "구강 위생사",
+   "english": "a dental hygienist"
+  },
+  {
+   "korean": "치과 장비",
+   "english": "dental instruments"
+  },
+  {
+   "korean": "교정과",
+   "english": "Orthodontics"
+  },
+  {
+   "korean": "교정치과의",
+   "english": "an orthodontist"
+  },
+  {
+   "korean": "교정기",
+   "english": "braces"
+  },
+  {
+   "korean": "투명 교정기",
+   "english": "a clear aligner"
+  },
+  {
+   "korean": "치과 질환",
+   "english": "Dental Problems"
+  },
+  {
+   "korean": "충치",
+   "english": "a cavity / decay"
+  },
+  {
+   "korean": "충전재",
+   "english": "a filling"
+  },
+  {
+   "korean": "인공 치관",
+   "english": "a crown"
+  },
+  {
+   "korean": "틀니",
+   "english": "dentures"
+  },
+  {
+   "korean": "잇몸질환",
+   "english": "gum disease"
+  },
+  {
+   "korean": "치석",
+   "english": "plaque"
+  },
+  {
+   "korean": "진료실에서",
+   "english": "An Office Visit"
+  },
+  {
+   "korean": "치아를 닦다",
+   "english": "clean the teeth"
+  },
+  {
+   "korean": "X선 촬영을 하다",
+   "english": "take X-rays"
+  },
+  {
+   "korean": "구강을 마취하다",
+   "english": "numb the mouth"
+  },
+  {
+   "korean": "이를 드릴하다",
+   "english": "drill a tooth"
+  },
+  {
+   "korean": "충치를 메우다",
+   "english": "fill a cavity"
+  },
+  {
+   "korean": "이를 뽑다",
+   "english": "pull a tooth"
+  },
+  {
+   "korean": "교차로",
+   "english": "An Intersection"
+  },
+  {
+   "korean": "빨래방",
+   "english": "a laundromat"
+  },
+  {
+   "korean": "세탁소",
+   "english": "dry cleaners"
+  },
+  {
+   "korean": "편의점",
+   "english": "a convenience store"
+  },
+  {
+   "korean": "약국",
+   "english": "a pharmacy"
+  },
+  {
+   "korean": "주차 공간",
+   "english": "a parking space"
+  },
+  {
+   "korean": "장애인 주차장",
+   "english": "handicapped parking"
+  },
+  {
+   "korean": "모퉁이",
+   "english": "a corner"
+  },
+  {
+   "korean": "신호등",
+   "english": "a traffic light"
+  },
+  {
+   "korean": "버스",
+   "english": "a bus"
+  },
+  {
+   "korean": "패스트 푸드 식당",
+   "english": "a fast food restaurant"
+  },
+  {
+   "korean": "드라이브 스루 창구",
+   "english": "a drive-thru window"
+  },
+  {
+   "korean": "신문 가판대",
+   "english": "a newsstand"
+  },
+  {
+   "korean": "우체통",
+   "english": "a mailbox"
+  },
+  {
+   "korean": "보행자",
+   "english": "a pedestrian"
+  },
+  {
+   "korean": "횡단보도",
+   "english": "a crosswalk"
+  },
+  {
+   "korean": "버스 정류장",
+   "english": "a bus stop"
+  },
+  {
+   "korean": "도넛 가게",
+   "english": "a donut shop"
+  },
+  {
+   "korean": "복사 센터",
+   "english": "a copy center"
+  },
+  {
+   "korean": "이발소",
+   "english": "a barbershop"
+  },
+  {
+   "korean": "중고 서점",
+   "english": "a used book store"
+  },
+  {
+   "korean": "연석",
+   "english": "a curb"
+  },
+  {
+   "korean": "자전거",
+   "english": "a bike"
+  },
+  {
+   "korean": "공중 전화",
+   "english": "a pay phone"
+  },
+  {
+   "korean": "보도",
+   "english": "a sidewalk"
+  },
+  {
+   "korean": "주차 미터기",
+   "english": "a parking meter"
+  },
+  {
+   "korean": "도로 표지판",
+   "english": "a street sign"
+  },
+  {
+   "korean": "소화전",
+   "english": "a fire hydrant"
+  },
+  {
+   "korean": "카트",
+   "english": "a cart"
+  },
+  {
+   "korean": "행상인",
+   "english": "a street vendor"
+  },
+  {
+   "korean": "보육 시설",
+   "english": "a childcare center"
+  },
+  {
+   "korean": "길을 건너다",
+   "english": "cross the street"
+  },
+  {
+   "korean": "신호등을 기다리다",
+   "english": "wait for the light"
+  },
+  {
+   "korean": "무단 횡단하다",
+   "english": "jaywalk"
+  },
+  {
+   "korean": "자전거를 타다",
+   "english": "ride a bike"
+  },
+  {
+   "korean": "자동차를 주차하다",
+   "english": "park the car"
+  },
+  {
+   "korean": "강아지를 산책시키다",
+   "english": "walk a dog"
+  },
+  {
+   "korean": "범죄",
+   "english": "Crime"
+  },
+  {
+   "korean": "파손 행위",
+   "english": "vandalism"
+  },
+  {
+   "korean": "강도",
+   "english": "a burglary"
+  },
+  {
+   "korean": "폭행",
+   "english": "an assault"
+  },
+  {
+   "korean": "집단 폭력",
+   "english": "gang violence"
+  },
+  {
+   "korean": "음주 운전",
+   "english": "drunk driving"
+  },
+  {
+   "korean": "불법 마약",
+   "english": "illegal drugs"
+  },
+  {
+   "korean": "방화",
+   "english": "arson"
+  },
+  {
+   "korean": "가게 좀도둑질",
+   "english": "shoplifting"
+  },
+  {
+   "korean": "신분 도용",
+   "english": "identity theft"
+  },
+  {
+   "korean": "피해자",
+   "english": "a victim"
+  },
+  {
+   "korean": "폭력 강도",
+   "english": "a mugging"
+  },
+  {
+   "korean": "살인",
+   "english": "murder"
+  },
+  {
+   "korean": "총",
+   "english": "a gun"
+  },
+  {
+   "korean": "공공 안전",
+   "english": "Public Safety"
+  },
+  {
+   "korean": "친구와 같이 걷는다",
+   "english": "walk with a friend"
+  },
+  {
+   "korean": "환한 길로 걷는다",
+   "english": "stay on well-lit streets"
+  },
+  {
+   "korean": "PIN번호를 노출시키지 않는다",
+   "english": "conceal your PIN number"
+  },
+  {
+   "korean": "지갑을 지킨다",
+   "english": "protect your purse or wallet"
+  },
+  {
+   "korean": "문을 잠근다",
+   "english": "lock your doors"
+  },
+  {
+   "korean": "모르는 사람에게 문을 열어주지 않는다",
+   "english": "don’t open your door to strangers"
+  },
+  {
+   "korean": "음주 운전을 하지 않는다",
+   "english": "don’t drink and drive"
+  },
+  {
+   "korean": "안전한 웹사이트에서 쇼핑한다",
+   "english": "shop on secure websites"
+  },
+  {
+   "korean": "주의를 살펴본다",
+   "english": "be aware of your surroundings"
+  },
+  {
+   "korean": "수상한 물건은 신고한다",
+   "english": "report suspicious packages"
+  },
+  {
+   "korean": "범죄를 보면 경찰에 신고한다",
+   "english": "report crimes to the police"
+  },
+  {
+   "korean": "이웃 감시 프로그램에 참가한다",
+   "english": "join a Neighborhood Watch"
+  },
+  {
+   "korean": "교통 표지판",
+   "english": "Traffic Signs"
+  },
+  {
+   "korean": "정지",
+   "english": "a stop"
+  },
+  {
+   "korean": "진입 금지",
+   "english": "do not enter"
+  },
+  {
+   "korean": "일방 통행",
+   "english": "one way"
+  },
+  {
+   "korean": "제한 속도",
+   "english": "a speed limit"
+  },
+  {
+   "korean": "U턴 허용",
+   "english": "U-turn OK"
+  },
+  {
+   "korean": "출구 없음 / 막다른 길",
+   "english": "no outlet / dead end"
+  },
+  {
+   "korean": "우회전만 허용",
+   "english": "right turn only"
+  },
+  {
+   "korean": "좌회전 금지",
+   "english": "no left turn"
+  },
+  {
+   "korean": "양보",
+   "english": "yield"
+  },
+  {
+   "korean": "합류 차선",
+   "english": "a merge"
+  },
+  {
+   "korean": "주차 금지",
+   "english": "no parking"
+  },
+  {
+   "korean": "장애인 주차장",
+   "english": "handicapped parking"
+  },
+  {
+   "korean": "횡단 보도",
+   "english": "a pedestrian crossing"
+  },
+  {
+   "korean": "철도 건널목",
+   "english": "a railroad crossing"
+  },
+  {
+   "korean": "학교 횡단보도",
+   "english": "a school crossing"
+  },
+  {
+   "korean": "도로 공사",
+   "english": "roadwork"
+  },
+  {
+   "korean": "국도 / 고속도로 표지판",
+   "english": "a U.S. route / a highway marker"
+  },
+  {
+   "korean": "병원",
+   "english": "a hospital"
+  },
+  {
+   "korean": "방향",
+   "english": "Directions"
+  },
+  {
+   "korean": "Elm St.에서 직진하다",
+   "english": "go straight on Elm Street"
+  },
+  {
+   "korean": "Pine St.에서 우회전하다",
+   "english": "turn right on Pine Street"
+  },
+  {
+   "korean": "Oak St.에서 좌회전하다",
+   "english": "turn left on Oak Street"
+  },
+  {
+   "korean": "모퉁이에서 정지하다",
+   "english": "stop at the corner"
+  },
+  {
+   "korean": "Main St.를 지나다",
+   "english": "go past Main Street"
+  },
+  {
+   "korean": "First St.으로 한 블록 가다",
+   "english": "go one block to First Street"
+  },
+  {
+   "korean": "지도",
+   "english": "Maps"
+  },
+  {
+   "korean": "북",
+   "english": "north"
+  },
+  {
+   "korean": "서",
+   "english": "west"
+  },
+  {
+   "korean": "남",
+   "english": "south"
+  },
+  {
+   "korean": "동",
+   "english": "east"
+  },
+  {
+   "korean": "기호",
+   "english": "a symbol"
+  },
+  {
+   "korean": "범례",
+   "english": "a key"
+  },
+  {
+   "korean": "축척",
+   "english": "a scale"
+  },
+  {
+   "korean": "거리",
+   "english": "a street"
+  },
+  {
+   "korean": "고속도로",
+   "english": "a highway"
+  },
+  {
+   "korean": "강",
+   "english": "a river"
+  },
+  {
+   "korean": "글로벌 위치 확인 시스템",
+   "english": "GPS (global positioning system)"
+  },
+  {
+   "korean": "인터넷 지도",
+   "english": "Internet map"
+  },
+  {
+   "korean": "모종삽",
+   "english": "a trowel"
+  },
+  {
+   "korean": "나무 울타리를 다듬다",
+   "english": "trim the hedges"
+  },
+  {
+   "korean": "정원사",
+   "english": "a gardening crew"
+  },
+  {
+   "korean": "낙엽 송풍기",
+   "english": "a leaf blower"
+  },
+  {
+   "korean": "일륜 수례",
+   "english": "a wheelbarrow"
+  },
+  {
+   "korean": "정원 관리 책임자",
+   "english": "a gardening crew leader"
+  },
+  {
+   "korean": "조경 디자이너",
+   "english": "a landscape designer"
+  },
+  {
+   "korean": "잔디 깎는 기계",
+   "english": "a lawn mower"
+  },
+  {
+   "korean": "삽",
+   "english": "a shovel"
+  },
+  {
+   "korean": "갈퀴",
+   "english": "a rake"
+  },
+  {
+   "korean": "전정 가위",
+   "english": "pruning shears"
+  },
+  {
+   "korean": "양손 전정 가위",
+   "english": "hedge clippers"
+  },
+  {
+   "korean": "잡초 제거기",
+   "english": "a weed whacker / a weed eater"
+  },
+  {
+   "korean": "잔디를 깎다",
+   "english": "mow the lawn"
+  },
+  {
+   "korean": "낙엽을 긁어 모으다",
+   "english": "rake the leaves"
+  },
+  {
+   "korean": "식물에 비료 / 물을 주다",
+   "english": "fertilize / feed the plants"
+  },
+  {
+   "korean": "나무를 심다",
+   "english": "plant a tree"
+  },
+  {
+   "korean": "나무에 물을 주다",
+   "english": "water the plants"
+  },
+  {
+   "korean": "화단의 잡초를 뽑다",
+   "english": "weed the flower beds"
+  },
+  {
+   "korean": "스프링클러를 설치하다",
+   "english": "install a sprinkler system"
+  },
+  {
+   "korean": "조경 및 정원 관리",
+   "english": "Landscaping and Gardening"
+  },
+  {
+   "korean": "쌀",
+   "english": "rice"
+  },
+  {
+   "korean": "밀",
+   "english": "wheat"
+  },
+  {
+   "korean": "콩",
+   "english": "soybeans"
+  },
+  {
+   "korean": "옥수수",
+   "english": "corn"
+  },
+  {
+   "korean": "자주개자리",
+   "english": "alfalfa"
+  },
+  {
+   "korean": "면",
+   "english": "cotton"
+  },
+  {
+   "korean": "밭",
+   "english": "a field"
+  },
+  {
+   "korean": "농장 노동자",
+   "english": "a farmworker"
+  },
+  {
+   "korean": "트랙터",
+   "english": "a tractor"
+  },
+  {
+   "korean": "과수원",
+   "english": "an orchard"
+  },
+  {
+   "korean": "헛간",
+   "english": "a barn"
+  },
+  {
+   "korean": "농기구",
+   "english": "farm equipment"
+  },
+  {
+   "korean": "농부 / 농산물 재배자",
+   "english": "a farmer / a grower"
+  },
+  {
+   "korean": "채소밭",
+   "english": "a vegetable garden"
+  },
+  {
+   "korean": "가축",
+   "english": "livestock"
+  },
+  {
+   "korean": "포도밭",
+   "english": "a vineyard"
+  },
+  {
+   "korean": "가축우리",
+   "english": "a corral"
+  },
+  {
+   "korean": "건초",
+   "english": "hay"
+  },
+  {
+   "korean": "울타리",
+   "english": "a fence"
+  },
+  {
+   "korean": "일꾼",
+   "english": "a hired hand"
+  },
+  {
+   "korean": "숫송아지",
+   "english": "cattle"
+  },
+  {
+   "korean": "목동",
+   "english": "a rancher"
+  },
+  {
+   "korean": "심다",
+   "english": "plant"
+  },
+  {
+   "korean": "수확하다",
+   "english": "harvest"
+  },
+  {
+   "korean": "젖을 짜다",
+   "english": "milk"
+  },
+  {
+   "korean": "먹이다",
+   "english": "feed"
+  },
+  {
+   "korean": "농사일과 목장일",
+   "english": "Farming and Ranching"
+  },
+  {
+   "korean": "과학",
+   "english": "Science"
+  },
+  {
+   "korean": "생물",
+   "english": "Biology"
+  },
+  {
+   "korean": "유기체",
+   "english": "organisms"
+  },
+  {
+   "korean": "생물학자",
+   "english": "a biologist"
+  },
+  {
+   "korean": "슬라이드",
+   "english": "a slide"
+  },
+  {
+   "korean": "세포",
+   "english": "a cell"
+  },
+  {
+   "korean": "세포벽",
+   "english": "a cell wall"
+  },
+  {
+   "korean": "세포막",
+   "english": "a cell membrane"
+  },
+  {
+   "korean": "핵",
+   "english": "a nucleus"
+  },
+  {
+   "korean": "염색체",
+   "english": "a chromosome"
+  },
+  {
+   "korean": "세포질",
+   "english": "cytoplasm"
+  },
+  {
+   "korean": "광합성",
+   "english": "photosynthesis"
+  },
+  {
+   "korean": "서식지",
+   "english": "a habitat"
+  },
+  {
+   "korean": "척추동물",
+   "english": "vertebrates"
+  },
+  {
+   "korean": "무척추동물",
+   "english": "invertebrates"
+  },
+  {
+   "korean": "현미경",
+   "english": "a microscope"
+  },
+  {
+   "korean": "접안렌즈",
+   "english": "an eyepiece"
+  },
+  {
+   "korean": "회전식 대물렌즈대",
+   "english": "a revolving nosepiece"
+  },
+  {
+   "korean": "대물 렌즈",
+   "english": "an objective"
+  },
+  {
+   "korean": "재물대",
+   "english": "a stage"
+  },
+  {
+   "korean": "조리개",
+   "english": "a diaphragm"
+  },
+  {
+   "korean": "광원",
+   "english": "a light source"
+  },
+  {
+   "korean": "받침대",
+   "english": "a base"
+  },
+  {
+   "korean": "재물대 고정 클립",
+   "english": "stage clips"
+  },
+  {
+   "korean": "미세 조정 다이얼",
+   "english": "a fine adjustment knob"
+  },
+  {
+   "korean": "손잡이",
+   "english": "an arm"
+  },
+  {
+   "korean": "조동 나사",
+   "english": "a coarse adjustment knob"
+  },
+  {
+   "korean": "화학",
+   "english": "Chemistry"
+  },
+  {
+   "korean": "화학자",
+   "english": "a chemist"
+  },
+  {
+   "korean": "주기율표",
+   "english": "the periodic table"
+  },
+  {
+   "korean": "분자",
+   "english": "a molecule"
+  },
+  {
+   "korean": "원자",
+   "english": "an atom"
+  },
+  {
+   "korean": "핵",
+   "english": "a nucleus"
+  },
+  {
+   "korean": "전자",
+   "english": "an electron"
+  },
+  {
+   "korean": "양성자",
+   "english": "a proton"
+  },
+  {
+   "korean": "중성자",
+   "english": "a neutron"
+  },
+  {
+   "korean": "물리",
+   "english": "Physics"
+  },
+  {
+   "korean": "물리학자",
+   "english": "a physicist"
+  },
+  {
+   "korean": "공식",
+   "english": "a formula"
+  },
+  {
+   "korean": "프리즘",
+   "english": "a prism"
+  },
+  {
+   "korean": "자석",
+   "english": "a magnet"
+  },
+  {
+   "korean": "과학실",
+   "english": "A Science Lab"
+  },
+  {
+   "korean": "분젠 가스 버너",
+   "english": "a Bunsen burner"
+  },
+  {
+   "korean": "눈금 실린더",
+   "english": "a graduated cylinder"
+  },
+  {
+   "korean": "비커",
+   "english": "a beaker"
+  },
+  {
+   "korean": "깔때기",
+   "english": "a funnel"
+  },
+  {
+   "korean": "저울",
+   "english": "a balance / a scale"
+  },
+  {
+   "korean": "시험관",
+   "english": "a test tube"
+  },
+  {
+   "korean": "핀셋",
+   "english": "forceps"
+  },
+  {
+   "korean": "도가니 집게",
+   "english": "crucible tongs"
+  },
+  {
+   "korean": "점적기",
+   "english": "a dropper"
+  },
+  {
+   "korean": "실험",
+   "english": "An Experiment"
+  },
+  {
+   "korean": "가설을 설명한다",
+   "english": "State a hypothesis"
+  },
+  {
+   "korean": "실험을 실시한다",
+   "english": "Do an experiment"
+  },
+  {
+   "korean": "관찰하다",
+   "english": "Observe"
+  },
+  {
+   "korean": "결과를 기록하다",
+   "english": "Record the results"
+  },
+  {
+   "korean": "결론을 도출하다",
+   "english": "Draw a conclusion"
+  },
+  {
+   "korean": "주방용품",
+   "english": "Kitchen Utensils"
+  },
+  {
+   "korean": "깡통 따개",
+   "english": "a can opener"
+  },
+  {
+   "korean": "강판",
+   "english": "a grater"
+  },
+  {
+   "korean": "찜통",
+   "english": "a steamer"
+  },
+  {
+   "korean": "저장 용기",
+   "english": "a storage container"
+  },
+  {
+   "korean": "후라이팬",
+   "english": "a frying pan"
+  },
+  {
+   "korean": "냄비",
+   "english": "a pot"
+  },
+  {
+   "korean": "국자",
+   "english": "a ladle"
+  },
+  {
+   "korean": "이중 냄비",
+   "english": "a double boiler"
+  },
+  {
+   "korean": "나무 숟가락",
+   "english": "a wooden spoon"
+  },
+  {
+   "korean": "캐서롤 접시",
+   "english": "a casserole dish"
+  },
+  {
+   "korean": "마늘 압착기",
+   "english": "a garlic press"
+  },
+  {
+   "korean": "고기 썰기용 칼",
+   "english": "a carving knife"
+  },
+  {
+   "korean": "굽기용 팬",
+   "english": "a roasting pan"
+  },
+  {
+   "korean": "굽기용 쇠선반",
+   "english": "a roasting rack"
+  },
+  {
+   "korean": "야채 껍질 제거기",
+   "english": "a vegetable peeler"
+  },
+  {
+   "korean": "껍질 벗기는 칼",
+   "english": "a paring knife"
+  },
+  {
+   "korean": "여과기",
+   "english": "a colander"
+  },
+  {
+   "korean": "부엌용 타이머",
+   "english": "a kitchen timer"
+  },
+  {
+   "korean": "주걱",
+   "english": "a spatula"
+  },
+  {
+   "korean": "계란 교반기",
+   "english": "an eggbeater"
+  },
+  {
+   "korean": "거품기",
+   "english": "a whisk"
+  },
+  {
+   "korean": "체",
+   "english": "a strainer"
+  },
+  {
+   "korean": "집게",
+   "english": "tongs"
+  },
+  {
+   "korean": "뚜껑",
+   "english": "a lid"
+  },
+  {
+   "korean": "소스 냄비",
+   "english": "a saucepan"
+  },
+  {
+   "korean": "케이크팬",
+   "english": "a cake pan"
+  },
+  {
+   "korean": "쿠키 판",
+   "english": "a cookie sheet"
+  },
+  {
+   "korean": "파이 팬",
+   "english": "a pie pan"
+  },
+  {
+   "korean": "냄비 집게",
+   "english": "potholders"
+  },
+  {
+   "korean": "밀방망이",
+   "english": "a rolling pin"
+  },
+  {
+   "korean": "믹스용 그릇",
+   "english": "a mixing bowl"
+  },
+  {
+   "korean": "병원",
+   "english": "A Hospital"
+  },
+  {
+   "korean": "전문의",
+   "english": "Medical Specialists"
+  },
+  {
+   "korean": "내과의사",
+   "english": "an internist"
+  },
+  {
+   "korean": "산과의사",
+   "english": "an obstetrician"
+  },
+  {
+   "korean": "심장전문의",
+   "english": "a cardiologist"
+  },
+  {
+   "korean": "소아과 의사",
+   "english": "a pediatrician"
+  },
+  {
+   "korean": "종양학 전문의",
+   "english": "an oncologist"
+  },
+  {
+   "korean": "방사선과 의사",
+   "english": "a radiologist"
+  },
+  {
+   "korean": "안과의사",
+   "english": "an ophthalmologist"
+  },
+  {
+   "korean": "정신과 의사",
+   "english": "a psychiatrist"
+  },
+  {
+   "korean": "간호사",
+   "english": "Nursing Staff"
+  },
+  {
+   "korean": "수술실 간호원",
+   "english": "a surgical nurse"
+  },
+  {
+   "korean": "공인 간호사",
+   "english": "a registered nurse (RN)"
+  },
+  {
+   "korean": "간호 조무사",
+   "english": "a licensed practical nurse (LPN)"
+  },
+  {
+   "korean": "유자격 간호 보조원",
+   "english": "a certified nursing assistant"
+  },
+  {
+   "korean": "병원 직원",
+   "english": "Hospital Staff"
+  },
+  {
+   "korean": "행정직원",
+   "english": "an administrator"
+  },
+  {
+   "korean": "입원과 직원",
+   "english": "an admissions clerk"
+  },
+  {
+   "korean": "영양사",
+   "english": "a dietician"
+  },
+  {
+   "korean": "보조원",
+   "english": "an orderly"
+  },
+  {
+   "korean": "병실",
+   "english": "A Hospital Room"
+  },
+  {
+   "korean": "자원봉사자",
+   "english": "a volunteer"
+  },
+  {
+   "korean": "환자",
+   "english": "a patient"
+  },
+  {
+   "korean": "환자복",
+   "english": "a hospital gown"
+  },
+  {
+   "korean": "약",
+   "english": "medication"
+  },
+  {
+   "korean": "침대 옆 작은 탁자",
+   "english": "a bed table"
+  },
+  {
+   "korean": "병원 침대",
+   "english": "a hospital bed"
+  },
+  {
+   "korean": "실내용 변기",
+   "english": "a bedpan"
+  },
+  {
+   "korean": "병원 차트",
+   "english": "a medical chart"
+  },
+  {
+   "korean": "정맥주사",
+   "english": "an IV (intravenous drip)"
+  },
+  {
+   "korean": "생명 징후 모니터",
+   "english": "a vital signs monitor"
+  },
+  {
+   "korean": "침대 조절기",
+   "english": "a bed control"
+  },
+  {
+   "korean": "호출 버튼",
+   "english": "a call button"
+  },
+  {
+   "korean": "채혈 전문의",
+   "english": "a phlebotomist"
+  },
+  {
+   "korean": "혈액 검사",
+   "english": "a blood test / blood work"
+  },
+  {
+   "korean": "의료 폐기물 처리기",
+   "english": "medical waste disposal"
+  },
+  {
+   "korean": "응급실 입구",
+   "english": "Emergency Room Entrance"
+  },
+  {
+   "korean": "응급의료 기술자",
+   "english": "an emergency medical technician (EMT)"
+  },
+  {
+   "korean": "들것 / 바퀴 달린 들것",
+   "english": "a stretcher / a gurney"
+  },
+  {
+   "korean": "구급차",
+   "english": "an ambulance"
+  },
+  {
+   "korean": "수술실",
+   "english": "Operating Room"
+  },
+  {
+   "korean": "마취 전문의",
+   "english": "an anesthesiologist"
+  },
+  {
+   "korean": "외과의사",
+   "english": "a surgeon"
+  },
+  {
+   "korean": "수술용 캡",
+   "english": "a surgical cap"
+  },
+  {
+   "korean": "의사의 수술복",
+   "english": "a surgical gown"
+  },
+  {
+   "korean": "수술용 장갑",
+   "english": "surgical gloves"
+  },
+  {
+   "korean": "수술대",
+   "english": "an operating table"
+  },
+  {
+   "korean": "우체국",
+   "english": "The post office"
+  },
+  {
+   "korean": "빠른 우편",
+   "english": "Priority Mail"
+  },
+  {
+   "korean": "특급 우편",
+   "english": "Express mail"
+  },
+  {
+   "korean": "미디어 우편",
+   "english": "Media Mail"
+  },
+  {
+   "korean": "등기 우편",
+   "english": "Certified Mail"
+  },
+  {
+   "korean": "국제우편",
+   "english": "airmail"
+  },
+  {
+   "korean": "육상 우편 / 소포 우편",
+   "english": "ground post / parcel post"
+  },
+  {
+   "korean": "우체국 직원",
+   "english": "a postal clerk"
+  },
+  {
+   "korean": "저울",
+   "english": "a scale"
+  },
+  {
+   "korean": "사서함",
+   "english": "a post office box"
+  },
+  {
+   "korean": "자동 우편 센터",
+   "english": "an automated postal center"
+  },
+  {
+   "korean": "무인 우편 창구",
+   "english": "a post office lobby drop"
+  },
+  {
+   "korean": "우체통",
+   "english": "a mailbox"
+  },
+  {
+   "korean": "편지",
+   "english": "a letter"
+  },
+  {
+   "korean": "봉투",
+   "english": "an envelope"
+  },
+  {
+   "korean": "카드",
+   "english": "a greeting card"
+  },
+  {
+   "korean": "우편 엽서",
+   "english": "a postcard"
+  },
+  {
+   "korean": "소포",
+   "english": "a package"
+  },
+  {
+   "korean": "우표 1권",
+   "english": "a book of stamps"
+  },
+  {
+   "korean": "우편물 기입 양식",
+   "english": "postal forms"
+  },
+  {
+   "korean": "우체부",
+   "english": "a letter carrier"
+  },
+  {
+   "korean": "반송 주소",
+   "english": "a return address"
+  },
+  {
+   "korean": "우편주소",
+   "english": "a mailing address"
+  },
+  {
+   "korean": "우표",
+   "english": "a stamp"
+  },
+  {
+   "korean": "우체국 소인",
+   "english": "a postmark"
+  },
+  {
+   "korean": "카드 보내기",
+   "english": "Sending a card"
+  },
+  {
+   "korean": "카드에 글을 쓴다",
+   "english": "Write a note in a card"
+  },
+  {
+   "korean": "봉투에 주소를 쓴다",
+   "english": "Address the envelope"
+  },
+  {
+   "korean": "우표를 붙인다",
+   "english": "Put on a stamp"
+  },
+  {
+   "korean": "카드를 보낸다",
+   "english": "Mail the card"
+  },
+  {
+   "korean": "카드를 배달한다",
+   "english": "Deliver the card"
+  },
+  {
+   "korean": "카드를 받는다",
+   "english": "Receive the card"
+  },
+  {
+   "korean": "카드를 읽는다",
+   "english": "Read the card"
+  },
+  {
+   "korean": "답장을 쓴다",
+   "english": "Write back"
+  }
+ ]
+}

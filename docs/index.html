@@ -1,16 +1,25 @@
-<p><a href="day02.html">day02</a></p>
-<p><a href="day03.html">day03</a></p>
-<p><a href="day04.html">day04</a></p>
-<p><a href="day05.html">day05</a></p>
-<p><a href="day06.html">day06</a></p>
-<p><a href="day07.html">day07</a></p>
-<p><a href="day08.html">day08</a></p>
-<p><a href="day09.html">day09</a></p>
-<p><a href="day11.html">day11</a></p>
-<p><a href="day12.html">day12</a></p>
-<p><a href="day13.html">day13</a></p>
-<p><a href="day14.html">day14</a></p>
-<p><a href="day15.html">day15</a></p>
-<p><a href="day16.html">day16</a></p>
-<p><a href="day17.html">day17</a></p>
-<p><a href="day2_17.html">written test용 단어 전집</p>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PSE 단어장 — 월별·일별 영단어 퀴즈" />
+  <meta name="theme-color" content="#6366f1" />
+  <title>PSE 단어장</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%236366f1'/><text x='50' y='68' font-size='58' font-family='sans-serif' font-weight='bold' fill='white' text-anchor='middle'>P</text></svg>" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <script>
+    // 초기 테마 (깜빡임 방지)
+    try {
+      var p = JSON.parse(localStorage.getItem("pse.v1.prefs") || "{}");
+      var t = p.theme || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div id="app-root"></div>
+  <script src="data/bundle.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "title": "PSE 단어장",
+  "subtitle": "월별 · 일별 영단어 퀴즈",
+  "months": [
+    { "id": "AM1", "name": "AM1" },
+    { "id": "AM3", "name": "AM3" },
+    { "id": "AM4", "name": "AM4" }
+  ]
+}
